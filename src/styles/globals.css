@@ -399,3 +399,61 @@ ul, ol {
     display: inline;
   }
 }
+
+/* --- LED de Encendido Respirando --- */
+@keyframes led-breath {
+  0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 2px var(--color-accent-hover)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px var(--color-accent-hover)); }
+}
+
+.breathing-dot {
+  animation: led-breath 2.5s ease-in-out infinite;
+}
+
+/* --- Barrido Holográfico de Cartuchos --- */
+.holographic-shimmer {
+  position: relative;
+}
+
+.holographic-shimmer::after {
+  content: "";
+  position: absolute;
+  top: -50%; 
+  left: -80%; 
+  width: 30%; 
+  height: 200%;
+  background: linear-gradient(to right, transparent, rgba(16, 185, 129, 0.15), transparent);
+  transform: rotate(30deg);
+  pointer-events: none;
+  transition: none;
+}
+
+.holographic-shimmer:hover::after {
+  left: 130%;
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Efecto de Inicialización de Monitor CRT --- */
+@keyframes boot-flicker {
+  0% { opacity: 0.1; filter: brightness(3); }
+  10% { opacity: 0.8; filter: brightness(1); }
+  15% { opacity: 0.2; }
+  30% { opacity: 0.9; }
+  40% { opacity: 0.4; }
+  55% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.boot-flicker {
+  animation: boot-flicker 0.45s ease-out 1;
+}
+
+/* --- Efecto de Oscilación de Fósforo Nixie Correcto --- */
+@keyframes nixie-flicker {
+  0%, 100% { filter: drop-shadow(0 0 4px var(--color-success)) brightness(1); }
+  50% { filter: drop-shadow(0 0 6px var(--color-success)) brightness(1.08); }
+}
+
+.nixie-flicker-active {
+  animation: nixie-flicker 2s ease-in-out infinite;
+}

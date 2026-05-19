@@ -27,7 +27,7 @@ export default function ColIndicator({ col, count, status }: Omit<ColIndicatorPr
         fontSize={20}
         fontWeight="bold"
         fontFamily="var(--font-mono)"
-        className="font-mono"
+        className={`font-mono ${status === 'correct' ? 'nixie-flicker-active' : ''}`}
       >
         {count}
       </text>

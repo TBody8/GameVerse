@@ -1,14 +1,17 @@
 import { type ReactNode } from 'react'
 import Header from './Header'
 import Footer from './Footer'
+import { useBattery } from '@/hooks/useBattery'
 
 interface PageLayoutProps {
   children: ReactNode
 }
 
 export default function PageLayout({ children }: PageLayoutProps) {
+  const batteryLevel = useBattery()
+
   return (
-    <div className="handheld-container">
+    <div className="handheld-container boot-flicker">
       {/* Marco de Consola Táctil (Double-Bezel) */}
       <div className="handheld-bezel">
         {/* Cabina superior del dispositivo / Chasis Hardware */}
@@ -17,7 +20,9 @@ export default function PageLayout({ children }: PageLayoutProps) {
           <span className="hardware-title-mobile">[ GV-OS V1.0 ]</span>
           <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
             <span>● OFFLINE</span>
-            <span style={{ color: 'var(--color-accent-text)' }}>● 100%</span>
+            <span style={{ color: 'var(--color-accent-text)', textShadow: 'var(--shadow-neon-text)' }}>
+              ● {batteryLevel}{batteryLevel !== '∞' ? '%' : ''}
+            </span>
           </div>
         </div>
 

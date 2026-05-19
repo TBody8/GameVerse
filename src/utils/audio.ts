@@ -92,3 +92,33 @@ export function playVictorySound(): void {
     })
   } catch {}
 }
+
+// Acorde de inicialización de la consola al arrancar
+export function playBootSound(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    // Acorde futurista: C4, G4, C5, E5 (ondas de triángulo con filtro analógico rápido)
+    const notes = [261.63, 392.00, 523.25, 659.25]
+
+    notes.forEach((freq, index) => {
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+
+      osc.type = 'sine'
+      osc.frequency.setValueAtTime(freq, now + index * 0.06)
+
+      // Entrada suave y decaimiento lento
+      gain.gain.setValueAtTime(0.0, now + index * 0.06)
+      gain.gain.linearRampToValueAtTime(0.05, now + index * 0.06 + 0.03)
+      gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.06 + 0.4)
+
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+
+      osc.start(now + index * 0.06)
+      osc.stop(now + index * 0.06 + 0.4)
+    })
+  } catch {}
+}

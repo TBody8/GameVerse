@@ -28,7 +28,7 @@ export default function RowIndicator({ row, count, gridSize, status }: Omit<RowI
         fontSize={20}
         fontWeight="bold"
         fontFamily="var(--font-mono)"
-        className="font-mono"
+        className={`font-mono ${status === 'correct' ? 'nixie-flicker-active' : ''}`}
       >
         {count}
       </text>

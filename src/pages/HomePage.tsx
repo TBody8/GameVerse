@@ -4,12 +4,22 @@ import { Link } from 'wouter'
 import { Train, Globe } from '@phosphor-icons/react'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import { playTick } from '@/utils/audio'
+import { playTick, playBootSound } from '@/utils/audio'
 
 export default function HomePage() {
   const cardsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Intentar reproducir sonido de inicialización al cargar
+    playBootSound()
+    
+    // Y registrar un listener de un solo uso para reproducirlo al primer click si el navegador lo bloqueó
+    const playBootOnFirstClick = () => {
+      playBootSound()
+      document.removeEventListener('click', playBootOnFirstClick)
+    }
+    document.addEventListener('click', playBootOnFirstClick)
+
     if (cardsRef.current) {
       const cards = cardsRef.current.children
       gsap.fromTo(
@@ -87,7 +97,7 @@ export default function HomePage() {
                 position: 'relative',
                 overflow: 'hidden',
               }}
-              className="game-card neon-glow-hover"
+              className="game-card neon-glow-hover holographic-shimmer"
               onMouseEnter={(e) => {
                 if (game.available) {
                   gsap.to(e.currentTarget, {

@@ -27,7 +27,7 @@ export default function Header() {
             textDecoration: 'none',
           }}
         >
-          <span style={{ color: 'var(--color-accent-hover)', filter: 'drop-shadow(0 0 4px var(--color-accent))' }}>●</span>
+          <span className="breathing-dot" style={{ color: 'var(--color-accent-hover)', filter: 'drop-shadow(0 0 4px var(--color-accent))' }}>●</span>
           <span>GameVerse</span>
         </Link>
 
