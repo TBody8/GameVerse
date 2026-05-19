@@ -11,15 +11,7 @@ export default function Header() {
         position: 'relative',
       }}
     >
-      <div
-        className="header-inner"
-        style={{
-          padding: 'var(--space-4) var(--space-8)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      <div className="handheld-header-inner">
         <Link
           href="/"
           onClick={() => playTick()}

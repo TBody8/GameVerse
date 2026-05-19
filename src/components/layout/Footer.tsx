@@ -4,19 +4,10 @@ export default function Footer() {
       style={{
         borderTop: '1px solid var(--color-border)',
         backgroundColor: 'var(--color-surface)',
-        padding: 'var(--space-6) var(--space-8)',
         marginTop: 'auto',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 'var(--space-4)',
-        }}
-      >
+      <div className="handheld-footer-inner">
         <span
           style={{
             fontSize: 'var(--text-xs)',
