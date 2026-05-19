@@ -457,3 +457,17 @@ ul, ol {
 .nixie-flicker-active {
   animation: nixie-flicker 2s ease-in-out infinite;
 }
+
+/* --- Pantalla Digital Nixie de Cabecera (VT323) --- */
+.neon-header-display {
+  font-family: 'VT323', monospace;
+  font-size: clamp(1.4rem, 6.2vw, 2.2rem);
+  white-space: nowrap;
+  color: var(--color-accent-text);
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.65), 0 0 2px rgba(16, 185, 129, 0.35);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+}

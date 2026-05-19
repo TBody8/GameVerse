@@ -46,15 +46,12 @@ export default function HomePage() {
     <PageLayout>
       <div style={{ marginBottom: 'var(--space-8)' }}>
         <h1
+          className="neon-header-display"
           style={{
-            fontSize: 'var(--text-3xl)',
-            fontWeight: 700,
-            letterSpacing: 'var(--tracking-tighter)',
             marginBottom: 'var(--space-2)',
-            textShadow: 'var(--shadow-neon-text)',
           }}
         >
-          <ScrambleText text="[ SELECCIONAR CARTUCHO ]" duration={900} delay={100} />
+          <ScrambleText text="◀ SYS.LOAD // SELECCIONAR CARTUCHO ▶" duration={950} delay={100} />
         </h1>
         <p
           style={{
