@@ -4,13 +4,14 @@ interface ScrambleTextProps {
   text: string
   duration?: number // duración en ms
   delay?: number // retraso en ms
+  onComplete?: () => void
   className?: string
   style?: React.CSSProperties
 }
 
 const CHARS = 'Ø▲█▓▒░×⚡#$@%&?='
 
-export default function ScrambleText({ text, duration = 900, delay = 100, className, style }: ScrambleTextProps) {
+export default function ScrambleText({ text, duration = 900, delay = 100, onComplete, className, style }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState('')
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function ScrambleText({ text, duration = 900, delay = 100, classN
           frameId = requestAnimationFrame(update)
         } else {
           setDisplayText(text)
+          if (onComplete) onComplete()
         }
       }
       

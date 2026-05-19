@@ -5,7 +5,7 @@ import { Train, Globe } from '@phosphor-icons/react'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { playTick, playBootSound } from '@/utils/audio'
-import ScrambleText from '@/components/ui/ScrambleText'
+import ConsoleHeader from '@/components/ui/ConsoleHeader'
 
 export default function HomePage() {
   const cardsRef = useRef<HTMLDivElement>(null)
@@ -45,14 +45,7 @@ export default function HomePage() {
   return (
     <PageLayout>
       <div style={{ marginBottom: 'var(--space-8)' }}>
-        <h1
-          className="neon-header-display"
-          style={{
-            marginBottom: 'var(--space-2)',
-          }}
-        >
-          <ScrambleText text="◀ SYS.LOAD // SELECCIONAR CARTUCHO ▶" duration={950} delay={100} />
-        </h1>
+        <ConsoleHeader />
         <p
           style={{
             fontSize: 'var(--text-sm)',
