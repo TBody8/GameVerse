@@ -1,4 +1,4 @@
-import { Check } from '@phosphor-icons/react'
+import { playVictorySound, playTick } from '@/utils/audio'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 
@@ -12,11 +12,14 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Reproducir melodía triunfal de la consola
+    playVictorySound()
+
     if (containerRef.current) {
       gsap.fromTo(
         containerRef.current.children,
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out' }
+        { opacity: 0, scale: 0.9, y: 16 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.4)' }
       )
     }
   }, [])
@@ -32,8 +35,8 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(247, 246, 243, 0.9)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(6, 9, 7, 0.85)',
+        backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -45,44 +48,46 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
         ref={containerRef}
         style={{
           width: '100%',
-          maxWidth: '400px',
+          maxWidth: '380px',
           backgroundColor: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
+          border: '2px solid var(--color-border)',
           borderRadius: 'var(--radius-lg)',
           padding: 'var(--space-10)',
-          boxShadow: 'var(--shadow-md)',
+          boxShadow: 'var(--shadow-neon-glow-hover)',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        {/* Icono de Éxito */}
         <div
           style={{
             width: '64px',
             height: '64px',
             borderRadius: '50%',
-            backgroundColor: 'var(--color-success-subtle)',
+            backgroundColor: 'var(--color-accent-subtle)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--color-success)',
+            color: 'var(--color-accent-text)',
             marginBottom: 'var(--space-6)',
+            border: '2px solid var(--color-border)',
+            boxShadow: 'var(--shadow-neon-glow)',
           }}
         >
-          <Check size={32} weight="bold" />
+          <span style={{ fontSize: '32px', filter: 'drop-shadow(0 0 6px var(--color-accent))' }}>★</span>
         </div>
 
         <h2
           style={{
-            fontSize: 'var(--text-2xl)',
+            fontSize: 'var(--text-xl)',
             fontWeight: 700,
             letterSpacing: 'var(--tracking-tight)',
             marginBottom: 'var(--space-2)',
+            textShadow: 'var(--shadow-neon-text)',
           }}
         >
-          ¡Victoria!
+          [ PUZZLE COMPLETADO ]
         </h2>
 
         <p
@@ -92,39 +97,41 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
             marginBottom: 'var(--space-6)',
           }}
         >
-          Has resuelto el puzzle perfectamente.
+          El circuito eléctrico de las vías está cerrado.
         </p>
 
-        {/* Tiempo transcurrido */}
+        {/* Cronómetro Nixie final */}
         <div
           style={{
-            backgroundColor: 'var(--color-surface-2)',
-            border: '1px solid var(--color-border)',
+            backgroundColor: '#0A0D0B',
+            border: '2px solid var(--color-border)',
             borderRadius: 'var(--radius-md)',
             padding: 'var(--space-4) var(--space-8)',
             marginBottom: 'var(--space-8)',
             width: '100%',
+            boxShadow: 'var(--shadow-neon-glow)',
           }}
         >
           <span
             style={{
-              fontSize: 'var(--text-xs)',
+              fontSize: '10px',
               color: 'var(--color-text-secondary)',
               textTransform: 'uppercase',
               letterSpacing: 'var(--tracking-wide)',
-              fontWeight: 600,
+              fontWeight: 700,
               display: 'block',
               marginBottom: 'var(--space-1)',
             }}
           >
-            Tiempo Total
+            TIEMPO REGISTRADO
           </span>
           <span
             className="font-mono"
             style={{
               fontSize: 'var(--text-2xl)',
               fontWeight: 700,
-              color: 'var(--color-text-primary)',
+              color: 'var(--color-accent-text)',
+              textShadow: 'var(--shadow-neon-text)',
             }}
           >
             {formatTime(time)}
@@ -141,25 +148,34 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
           }}
         >
           <button
-            onClick={onNext}
+            onClick={() => {
+              playTick()
+              onNext()
+            }}
+            className="neon-glow"
             style={{
               width: '100%',
               padding: 'var(--space-3)',
               backgroundColor: 'var(--color-accent)',
-              color: '#FFFFFF',
+              color: '#060907',
               borderRadius: 'var(--radius-md)',
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: 'var(--text-sm)',
+              letterSpacing: 'var(--tracking-wide)',
               transition: 'background-color var(--transition-fast)',
+              boxShadow: 'var(--shadow-neon-glow)',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--color-accent-hover)')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--color-accent)')}
           >
-            Siguiente Puzzle
+            SIGUIENTE PUZZLE
           </button>
 
           <button
-            onClick={onReset}
+            onClick={() => {
+              playTick()
+              onReset()
+            }}
             style={{
               width: '100%',
               padding: 'var(--space-3)',
@@ -167,7 +183,7 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
               color: 'var(--color-text-secondary)',
               border: '1px solid var(--color-border)',
               borderRadius: 'var(--radius-md)',
-              fontWeight: 500,
+              fontWeight: 600,
               fontSize: 'var(--text-sm)',
               transition: 'all var(--transition-fast)',
             }}
@@ -180,7 +196,7 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
               e.currentTarget.style.color = 'var(--color-text-secondary)'
             }}
           >
-            Volver a Jugar
+            REINICIAR
           </button>
         </div>
       </div>

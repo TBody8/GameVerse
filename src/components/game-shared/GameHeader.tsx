@@ -1,5 +1,6 @@
 import { Link } from 'wouter'
 import { ArrowLeft, ArrowCounterClockwise } from '@phosphor-icons/react'
+import { playTick } from '@/utils/audio'
 
 interface GameHeaderProps {
   title: string
@@ -24,23 +25,24 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
         flexWrap: 'wrap',
         gap: 'var(--space-4)',
         width: '100%',
-        marginBottom: 'var(--space-8)',
+        marginBottom: 'var(--space-6)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
         <Link href="/">
           <a
-            className="icon-arrow-left"
+            onClick={() => playTick()}
+            className="icon-arrow-left neon-glow-hover"
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '36px',
-              height: '36px',
-              border: '1px solid var(--color-border)',
+              width: '38px',
+              height: '38px',
+              border: '2px solid var(--color-border)',
               borderRadius: 'var(--radius-md)',
               color: 'var(--color-text-primary)',
-              backgroundColor: 'var(--color-surface)',
+              backgroundColor: 'var(--color-surface-2)',
               transition: 'all var(--transition-fast)',
             }}
           >
@@ -51,60 +53,67 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
         <div>
           <h1
             style={{
-              fontSize: 'var(--text-2xl)',
+              fontSize: 'var(--text-xl)',
               fontWeight: 700,
               letterSpacing: 'var(--tracking-tight)',
+              textShadow: 'var(--shadow-neon-text)',
             }}
           >
-            {title}
+            {title.toUpperCase()}
           </h1>
           <span
             style={{
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-text-secondary)',
+              fontSize: '10px',
+              color: 'var(--color-accent-text)',
               textTransform: 'uppercase',
               letterSpacing: 'var(--tracking-wide)',
-              fontWeight: 600,
+              fontWeight: 700,
             }}
           >
-            {difficulty}
+            [ DIFICULTAD: {difficulty.toUpperCase()} ]
           </span>
         </div>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
-        {/* Temporizador */}
+        {/* HUD Cronómetro Nixie Neón */}
         <div
           className="font-mono"
           style={{
             fontSize: 'var(--text-lg)',
-            fontWeight: 600,
-            color: 'var(--color-text-primary)',
-            backgroundColor: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
+            fontWeight: 700,
+            color: 'var(--color-accent-text)',
+            backgroundColor: '#0A0D0B',
+            border: '2px solid var(--color-border)',
             borderRadius: 'var(--radius-md)',
             padding: 'var(--space-2) var(--space-4)',
-            minWidth: '76px',
+            minWidth: '86px',
             textAlign: 'center',
+            boxShadow: 'var(--shadow-neon-glow)',
+            textShadow: 'var(--shadow-neon-text)',
           }}
         >
           {formatTime(time)}
         </div>
 
-        {/* Reiniciar */}
+        {/* Reiniciar Táctil */}
         <button
-          onClick={onReset}
+          onClick={() => {
+            playTick()
+            onReset()
+          }}
           aria-label="Reiniciar tablero"
+          className="neon-glow-hover"
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '38px',
-            height: '38px',
-            border: '1px solid var(--color-border)',
+            width: '40px',
+            height: '40px',
+            border: '2px solid var(--color-border)',
             borderRadius: 'var(--radius-md)',
             color: 'var(--color-text-primary)',
-            backgroundColor: 'var(--color-surface)',
+            backgroundColor: 'var(--color-surface-2)',
             transition: 'all var(--transition-fast)',
           }}
         >

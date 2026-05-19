@@ -15,7 +15,6 @@ export default function Board({ grid, puzzle, validation, onCellClick }: BoardPr
   const size = puzzle.gridSize
 
   // Tamaño total de la cuadrícula SVG
-  // Celdas: 100 * size. Indicadores: 80 extra para derecha/arriba
   const width = size * 100 + 80
   const height = size * 100 + 40
 
@@ -29,11 +28,11 @@ export default function Board({ grid, puzzle, validation, onCellClick }: BoardPr
         maxWidth: `${size * 70 + 80}px`,
         margin: '0 auto',
         aspectRatio: `${width} / ${height}`,
-        backgroundColor: 'var(--color-surface)',
-        border: '1px solid var(--color-border)',
+        backgroundColor: '#070A08', // Negro matriz apagada
+        border: '2px solid var(--color-border)',
         borderRadius: 'var(--radius-lg)',
         padding: 'var(--space-8) var(--space-4)',
-        boxShadow: 'var(--shadow-sm)',
+        boxShadow: 'var(--shadow-neon-glow)',
       }}
     >
       <svg
@@ -81,13 +80,11 @@ export default function Board({ grid, puzzle, validation, onCellClick }: BoardPr
           </g>
         ))}
 
-        {/* Sprite del Tren Victorioso animado */}
+        {/* Estela del Tren Victorioso animado estilo TRON */}
         <g id="victory-train" style={{ opacity: 0, pointerEvents: 'none' }}>
-          {/* Pequeña locomotora SVG minimalista */}
-          <rect x={-15} y={-10} width={30} height={20} fill="var(--color-accent)" rx={4} />
-          <rect x={-5} y={-14} width={12} height={8} fill="var(--color-accent-hover)" rx={2} />
-          <circle cx={-8} cy={7} r={4} fill="#111" />
-          <circle cx={8} cy={7} r={4} fill="#111" />
+          {/* Pequeño destello de neón brillante */}
+          <circle cx={0} cy={0} r={18} fill="var(--color-accent-hover)" opacity={0.6} style={{ filter: 'drop-shadow(0 0 10px var(--color-accent-hover))' }} />
+          <circle cx={0} cy={0} r={8} fill="#FFFFFF" />
         </g>
       </svg>
     </div>

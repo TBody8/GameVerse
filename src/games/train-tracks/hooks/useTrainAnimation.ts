@@ -5,7 +5,6 @@ import { type Position } from '../logic/types'
 interface UseTrainAnimationProps {
   isVictory: boolean
   solution: Position[]
-  gridSize: number
   onComplete: () => void
 }
 
@@ -13,7 +12,7 @@ export function useTrainAnimation({
   isVictory,
   solution,
   onComplete,
-}: Omit<UseTrainAnimationProps, 'gridSize'>) {
+}: UseTrainAnimationProps) {
   useEffect(() => {
     if (!isVictory || solution.length === 0) return
 
@@ -28,12 +27,11 @@ export function useTrainAnimation({
     })
 
     // Asegurarse de que el tren empiece invisible y colocado
-    tl.set(train, { opacity: 1, scale: 1 })
+    // En Cyber-Arcade, el tren es una estela de energía brillante
+    tl.set(train, { opacity: 0.9, scale: 1, filter: 'drop-shadow(0 0 8px var(--color-accent-hover))' })
 
     // Animación del tren recorriendo el camino
     solution.forEach((pos, index) => {
-      // Cada celda mide 100 unidades en el SVG del tablero
-      // Centro de la celda es: x = col * 100 + 50, y = row * 100 + 50
       const targetX = pos.col * 100 + 50
       const targetY = pos.row * 100 + 50
 
@@ -41,27 +39,27 @@ export function useTrainAnimation({
         tl.set(train, { x: targetX, y: targetY })
       } else {
         const prevPos = solution[index - 1]
-        // Calcular ángulo de rotación para que mire al frente del movimiento
         let rotation = 0
-        if (pos.col > prevPos.col) rotation = 0 // derecha
-        if (pos.col < prevPos.col) rotation = 180 // izquierda
-        if (pos.row > prevPos.row) rotation = 90 // abajo
-        if (pos.row < prevPos.row) rotation = 270 // arriba
+        if (pos.col > prevPos.col) rotation = 0
+        if (pos.col < prevPos.col) rotation = 180
+        if (pos.row > prevPos.row) rotation = 90
+        if (pos.row < prevPos.row) rotation = 270
 
         tl.to(train, {
           x: targetX,
           y: targetY,
           rotation,
-          duration: 0.25,
-          ease: 'power1.inOut',
+          duration: 0.18, // Movimiento ultra rápido de energía cyber
+          ease: 'sine.inInOut',
         })
       }
     })
 
-    // Desvanecer el tren
+    // Desvanecer el tren con un destello
     tl.to(train, {
+      scale: 1.4,
       opacity: 0,
-      duration: 0.3,
+      duration: 0.25,
       ease: 'power2.out',
     })
   }, [isVictory, solution, onComplete])

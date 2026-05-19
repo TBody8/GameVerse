@@ -1,5 +1,6 @@
 import LanguageSelector from '@/components/ui/LanguageSelector'
 import { Link } from 'wouter'
+import { playTick } from '@/utils/audio'
 
 export default function Header() {
   return (
@@ -7,16 +8,12 @@ export default function Header() {
       style={{
         borderBottom: '1px solid var(--color-border)',
         backgroundColor: 'var(--color-surface)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
+        position: 'relative',
       }}
     >
       <div
         className="header-inner"
         style={{
-          maxWidth: 'var(--max-w-content)',
-          margin: '0 auto',
           padding: 'var(--space-4) var(--space-6)',
           display: 'flex',
           justifyContent: 'space-between',
@@ -25,6 +22,7 @@ export default function Header() {
       >
         <Link href="/">
           <a
+            onClick={() => playTick()}
             style={{
               fontSize: 'var(--text-xl)',
               fontWeight: 700,
@@ -33,9 +31,10 @@ export default function Header() {
               display: 'flex',
               alignItems: 'center',
               gap: 'var(--space-2)',
+              textShadow: 'var(--shadow-neon-text)',
             }}
           >
-            <span style={{ color: 'var(--color-accent)' }}>●</span>
+            <span style={{ color: 'var(--color-accent-hover)', filter: 'drop-shadow(0 0 4px var(--color-accent))' }}>●</span>
             <span>GameVerse</span>
           </a>
         </Link>

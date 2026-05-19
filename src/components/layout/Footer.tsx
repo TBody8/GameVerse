@@ -4,14 +4,12 @@ export default function Footer() {
       style={{
         borderTop: '1px solid var(--color-border)',
         backgroundColor: 'var(--color-surface)',
-        padding: 'var(--space-8) var(--space-6)',
+        padding: 'var(--space-6) var(--space-6)',
         marginTop: 'auto',
       }}
     >
       <div
         style={{
-          maxWidth: 'var(--max-w-content)',
-          margin: '0 auto',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -26,25 +24,20 @@ export default function Footer() {
             fontFamily: 'var(--font-mono)',
           }}
         >
-          © 2026 GameVerse. 100% Offline.
+          [ DEVICE STATUS: 100% OFFLINE ]
         </span>
 
-        <div
+        <span
           style={{
-            display: 'flex',
-            gap: 'var(--space-6)',
+            fontSize: 'var(--text-xs)',
+            color: 'var(--color-accent-text)',
+            fontFamily: 'var(--font-mono)',
+            textShadow: 'var(--shadow-neon-text)',
+            fontWeight: 600,
           }}
         >
-          <span
-            style={{
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-text-secondary)',
-              fontFamily: 'var(--font-mono)',
-            }}
-          >
-            Zero-Backend
-          </span>
-        </div>
+          NEON POWERED
+        </span>
       </div>
     </footer>
   )

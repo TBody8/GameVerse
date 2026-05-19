@@ -2,6 +2,7 @@ import { useLocale } from '@/i18n/provider'
 import { LOCALES, type Locale } from '@/i18n/config'
 import { useState, useRef, useEffect } from 'react'
 import { GlobeSimple, Check } from '@phosphor-icons/react'
+import { playTick } from '@/utils/audio'
 
 export default function LanguageSelector() {
   const { currentLocale, changeLocale } = useLocale()
@@ -21,9 +22,12 @@ export default function LanguageSelector() {
   return (
     <div className="lang-selector-container" ref={dropdownRef} style={{ position: 'relative' }}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          playTick()
+          setIsOpen(!isOpen)
+        }}
         aria-label="Seleccionar idioma"
-        className="lang-btn"
+        className="lang-btn neon-glow-hover"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -31,12 +35,12 @@ export default function LanguageSelector() {
           padding: 'var(--space-2) var(--space-3)',
           border: '1px solid var(--color-border)',
           borderRadius: 'var(--radius-md)',
-          backgroundColor: 'var(--color-surface)',
+          backgroundColor: 'var(--color-surface-2)',
           transition: 'all var(--transition-fast)',
         }}
       >
         <GlobeSimple size={18} weight="bold" />
-        <span style={{ fontSize: 'var(--text-sm)', fontWeight: 500 }}>
+        <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600 }}>
           {LOCALES[currentLocale].nativeName}
         </span>
       </button>
@@ -50,8 +54,8 @@ export default function LanguageSelector() {
             right: 0,
             backgroundColor: 'var(--color-surface)',
             border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-md)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: 'var(--shadow-neon-glow)',
             padding: 'var(--space-2) 0',
             minWidth: '160px',
             zIndex: 100,
@@ -63,6 +67,7 @@ export default function LanguageSelector() {
             <li key={loc} style={{ width: '100%' }}>
               <button
                 onClick={() => {
+                  playTick()
                   changeLocale(loc)
                   setIsOpen(false)
                 }}
@@ -77,6 +82,7 @@ export default function LanguageSelector() {
                   color: loc === currentLocale ? 'var(--color-accent-text)' : 'var(--color-text-primary)',
                   backgroundColor: loc === currentLocale ? 'var(--color-accent-subtle)' : 'transparent',
                   transition: 'background-color var(--transition-fast)',
+                  textShadow: loc === currentLocale ? 'var(--shadow-neon-text)' : 'none',
                 }}
               >
                 <span>{LOCALES[loc].nativeName}</span>

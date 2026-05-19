@@ -34,7 +34,7 @@ function storeLocale(locale: Locale): void {
 }
 
 async function loadCatalog(locale: Locale) {
-  const { messages } = await import(`./locales/${locale}/messages.js`)
+  const { messages } = await import(`./locales/${locale}/messages.po`)
   return messages
 }
 

@@ -1,4 +1,5 @@
 import { type Difficulty } from '@/games/train-tracks/logic/types'
+import { playTick } from '@/utils/audio'
 
 interface DifficultySelectorProps {
   current: Difficulty
@@ -6,10 +7,10 @@ interface DifficultySelectorProps {
 }
 
 const DIFFICULTIES: { value: Difficulty; label: string }[] = [
-  { value: 'easy', label: 'Fácil' },
-  { value: 'medium', label: 'Medio' },
-  { value: 'hard', label: 'Difícil' },
-  { value: 'expert', label: 'Experto' },
+  { value: 'easy', label: '4x4' },
+  { value: 'medium', label: '6x6' },
+  { value: 'hard', label: '8x8' },
+  { value: 'expert', label: '10x10' },
 ]
 
 export default function DifficultySelector({ current, onChange }: DifficultySelectorProps) {
@@ -18,27 +19,32 @@ export default function DifficultySelector({ current, onChange }: DifficultySele
       style={{
         display: 'flex',
         gap: 'var(--space-2)',
-        backgroundColor: 'var(--color-surface-2)',
-        border: '1px solid var(--color-border)',
+        backgroundColor: '#090E0C',
+        border: '2px solid var(--color-border)',
         borderRadius: 'var(--radius-lg)',
         padding: 'var(--space-1)',
         alignSelf: 'center',
+        marginBottom: 'var(--space-4)',
+        boxShadow: 'var(--shadow-neon-glow)',
       }}
     >
       {DIFFICULTIES.map((diff) => (
         <button
           key={diff.value}
-          onClick={() => onChange(diff.value)}
+          onClick={() => {
+            playTick()
+            onChange(diff.value)
+          }}
           style={{
             padding: 'var(--space-2) var(--space-4)',
             borderRadius: 'var(--radius-md)',
             fontSize: 'var(--text-xs)',
-            fontWeight: 600,
-            textTransform: 'uppercase',
+            fontWeight: 700,
             letterSpacing: 'var(--tracking-wide)',
-            backgroundColor: current === diff.value ? 'var(--color-btn-primary-bg)' : 'transparent',
-            color: current === diff.value ? 'var(--color-btn-primary-text)' : 'var(--color-text-secondary)',
+            backgroundColor: current === diff.value ? 'var(--color-accent)' : 'transparent',
+            color: current === diff.value ? '#060907' : 'var(--color-text-secondary)',
             transition: 'all var(--transition-fast)',
+            textShadow: current === diff.value ? 'none' : 'none',
           }}
         >
           {diff.label}
