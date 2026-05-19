@@ -29,25 +29,25 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
-        <Link href="/">
-          <a
-            onClick={() => playTick()}
-            className="icon-arrow-left neon-glow-hover"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '38px',
-              height: '38px',
-              border: '2px solid var(--color-border)',
-              borderRadius: 'var(--radius-md)',
-              color: 'var(--color-text-primary)',
-              backgroundColor: 'var(--color-surface-2)',
-              transition: 'all var(--transition-fast)',
-            }}
-          >
-            <ArrowLeft size={18} weight="bold" />
-          </a>
+        <Link
+          href="/"
+          onClick={() => playTick()}
+          className="icon-arrow-left neon-glow-hover"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '38px',
+            height: '38px',
+            border: '2px solid var(--color-border)',
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--color-text-primary)',
+            backgroundColor: 'var(--color-surface-2)',
+            transition: 'all var(--transition-fast)',
+            textDecoration: 'none',
+          }}
+        >
+          <ArrowLeft size={18} weight="bold" />
         </Link>
 
         <div>

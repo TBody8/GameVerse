@@ -16,7 +16,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
         backgroundColor: 'var(--color-canvas)',
         color: 'var(--color-text-primary)',
         position: 'relative',
-        padding: '0 var(--space-4)',
+        padding: 'var(--space-4) var(--space-6)', // Aumento de margen de seguridad externo
       }}
     >
       {/* Marco de Consola Táctil (Double-Bezel) */}
@@ -28,7 +28,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
           flex: 1,
           width: '100%',
           maxWidth: 'var(--max-w-content)',
-          margin: 'var(--space-6) auto',
+          margin: '0 auto', // Centrado perfecto
           backgroundColor: 'var(--color-surface)',
           border: '2px solid var(--color-border)',
           borderRadius: 'var(--radius-lg)',
@@ -41,13 +41,13 @@ export default function PageLayout({ children }: PageLayoutProps) {
         <div
           className="handheld-hardware-bar"
           style={{
-            height: '24px',
+            height: '28px',
             backgroundColor: '#0A0D0B',
             borderBottom: '1px solid var(--color-border)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 var(--space-6)',
+            padding: '0 var(--space-8)', // Alineado con el padding general
             fontSize: '10px',
             fontFamily: 'var(--font-mono)',
             color: 'var(--color-text-secondary)',
@@ -68,7 +68,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
           style={{
             flex: 1,
             width: '100%',
-            padding: 'var(--space-8) var(--space-6)',
+            padding: 'var(--space-8) var(--space-8)', // Armonía y alineación izquierda-derecha
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',

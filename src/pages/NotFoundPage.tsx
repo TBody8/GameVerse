@@ -31,20 +31,20 @@ export default function NotFoundPage() {
         >
           La página o juego que buscas no existe.
         </p>
-        <Link href="/">
-          <a
-            style={{
-              padding: 'var(--space-3) var(--space-6)',
-              backgroundColor: 'var(--color-btn-primary-bg)',
-              color: 'var(--color-btn-primary-text)',
-              borderRadius: 'var(--radius-md)',
-              fontWeight: 500,
-              fontSize: 'var(--text-sm)',
-              transition: 'background-color var(--transition-fast)',
-            }}
-          >
-            Volver al inicio
-          </a>
+        <Link
+          href="/"
+          style={{
+            padding: 'var(--space-3) var(--space-6)',
+            backgroundColor: 'var(--color-btn-primary-bg)',
+            color: 'var(--color-btn-primary-text)',
+            borderRadius: 'var(--radius-md)',
+            fontWeight: 500,
+            fontSize: 'var(--text-sm)',
+            transition: 'background-color var(--transition-fast)',
+            textDecoration: 'none',
+          }}
+        >
+          Volver al inicio
         </Link>
       </div>
     </PageLayout>

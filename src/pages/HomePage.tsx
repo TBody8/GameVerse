@@ -68,117 +68,117 @@ export default function HomePage() {
           const Icon = game.iconName === 'Train' ? Train : Globe
 
           return (
-            <Link key={game.id} href={game.available ? `/game/${game.id}` : '#'}>
-              <a
-                onClick={() => playTick()}
+            <Link
+              key={game.id}
+              href={game.available ? `/game/${game.id}` : '#'}
+              onClick={() => playTick()}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: 'var(--space-8)',
+                backgroundColor: 'var(--color-surface-2)',
+                border: '2px solid var(--color-border)',
+                borderRadius: 'var(--radius-lg)',
+                textDecoration: 'none',
+                color: 'inherit',
+                transition: 'all var(--transition-base)',
+                cursor: game.available ? 'pointer' : 'default',
+                opacity: game.available ? 1 : 0.4,
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+              className="game-card neon-glow-hover"
+              onMouseEnter={(e) => {
+                if (game.available) {
+                  gsap.to(e.currentTarget, {
+                    y: -6,
+                    borderColor: 'var(--color-accent-hover)',
+                    duration: 0.25,
+                    ease: 'power2.out',
+                  })
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (game.available) {
+                  gsap.to(e.currentTarget, {
+                    y: 0,
+                    borderColor: 'var(--color-border)',
+                    duration: 0.25,
+                    ease: 'power2.out',
+                  })
+                }
+              }}
+            >
+              {/* Ranura del cartucho estética */}
+              <div
                 style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '100px',
+                  height: '4px',
+                  backgroundColor: 'var(--color-accent)',
+                  borderRadius: '0 0 var(--radius-sm) var(--radius-sm)',
+                  boxShadow: 'var(--shadow-neon-glow)',
+                }}
+              />
+
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: 'var(--color-accent-subtle)',
                   display: 'flex',
-                  flexDirection: 'column',
-                  padding: 'var(--space-8)',
-                  backgroundColor: 'var(--color-surface-2)',
-                  border: '2px solid var(--color-border)',
-                  borderRadius: 'var(--radius-lg)',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  transition: 'all var(--transition-base)',
-                  cursor: game.available ? 'pointer' : 'default',
-                  opacity: game.available ? 1 : 0.4,
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-                className="game-card neon-glow-hover"
-                onMouseEnter={(e) => {
-                  if (game.available) {
-                    gsap.to(e.currentTarget, {
-                      y: -6,
-                      borderColor: 'var(--color-accent-hover)',
-                      duration: 0.25,
-                      ease: 'power2.out',
-                    })
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (game.available) {
-                    gsap.to(e.currentTarget, {
-                      y: 0,
-                      borderColor: 'var(--color-border)',
-                      duration: 0.25,
-                      ease: 'power2.out',
-                    })
-                  }
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-accent-text)',
+                  marginBottom: 'var(--space-4)',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: 'var(--shadow-neon-glow)',
                 }}
               >
-                {/* Ranura del cartucho estética */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '100px',
-                    height: '4px',
-                    backgroundColor: 'var(--color-accent)',
-                    borderRadius: '0 0 var(--radius-sm) var(--radius-sm)',
-                    boxShadow: 'var(--shadow-neon-glow)',
-                  }}
-                />
+                <Icon size={24} weight="bold" />
+              </div>
 
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: 'var(--color-accent-subtle)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--color-accent-text)',
-                    marginBottom: 'var(--space-4)',
-                    border: '1px solid var(--color-border)',
-                    boxShadow: 'var(--shadow-neon-glow)',
-                  }}
-                >
-                  <Icon size={24} weight="bold" />
-                </div>
+              <h2
+                style={{
+                  fontSize: 'var(--text-lg)',
+                  fontWeight: 700,
+                  marginBottom: 'var(--space-2)',
+                  textShadow: 'var(--shadow-neon-text)',
+                }}
+              >
+                {game.nameKey.toUpperCase()}
+              </h2>
 
-                <h2
-                  style={{
-                    fontSize: 'var(--text-lg)',
-                    fontWeight: 700,
-                    marginBottom: 'var(--space-2)',
-                    textShadow: 'var(--shadow-neon-text)',
-                  }}
-                >
-                  {game.nameKey.toUpperCase()}
-                </h2>
+              <p
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--color-text-secondary)',
+                  lineHeight: 1.5,
+                  marginBottom: 'var(--space-6)',
+                  flex: 1,
+                }}
+              >
+                {game.descriptionKey}
+              </p>
 
-                <p
-                  style={{
-                    fontSize: 'var(--text-sm)',
-                    color: 'var(--color-text-secondary)',
-                    lineHeight: 1.5,
-                    marginBottom: 'var(--space-6)',
-                    flex: 1,
-                  }}
-                >
-                  {game.descriptionKey}
-                </p>
-
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 'var(--text-xs)',
-                    color: game.available ? 'var(--color-accent-text)' : 'var(--color-text-disabled)',
-                    textShadow: game.available ? 'var(--shadow-neon-text)' : 'none',
-                    fontWeight: 700,
-                  }}
-                >
-                  <span>{game.available ? '● CARGAR JUEGO' : '○ BLOQUEADO'}</span>
-                </div>
-              </a>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'var(--text-xs)',
+                  color: game.available ? 'var(--color-accent-text)' : 'var(--color-text-disabled)',
+                  textShadow: game.available ? 'var(--shadow-neon-text)' : 'none',
+                  fontWeight: 700,
+                }}
+              >
+                <span>{game.available ? '● CARGAR JUEGO' : '○ BLOQUEADO'}</span>
+              </div>
             </Link>
           )
         })}

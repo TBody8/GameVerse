@@ -4,7 +4,7 @@ export default function Footer() {
       style={{
         borderTop: '1px solid var(--color-border)',
         backgroundColor: 'var(--color-surface)',
-        padding: 'var(--space-6) var(--space-6)',
+        padding: 'var(--space-6) var(--space-8)',
         marginTop: 'auto',
       }}
     >
