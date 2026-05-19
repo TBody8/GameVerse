@@ -86,8 +86,8 @@ export default function Board({ grid, puzzle, validation, onCellClick }: BoardPr
           {/* Pequeña locomotora SVG minimalista */}
           <rect x={-15} y={-10} width={30} height={20} fill="var(--color-accent)" rx={4} />
           <rect x={-5} y={-14} width={12} height={8} fill="var(--color-accent-hover)" rx={2} />
-          <circle cx={-8} cy={10} r={4} fill="#111" />
-          <circle cx={8} cy={10} r={4} fill="#111" />
+          <circle cx={-8} cy={7} r={4} fill="#111" />
+          <circle cx={8} cy={7} r={4} fill="#111" />
         </g>
       </svg>
     </div>
