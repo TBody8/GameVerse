@@ -1,0 +1,39 @@
+/* ============================================================
+   RTL Overrides — Arabic (dir="rtl")
+   Se carga automáticamente cuando locale === 'ar'
+   ============================================================ */
+
+[dir='rtl'] {
+  /* Textos y alineación */
+  text-align: right;
+
+  /* Header layout */
+  [dir='rtl'] .header-inner {
+    flex-direction: row-reverse;
+  }
+
+  /* Iconos direccionales (flechas) */
+  .icon-arrow-left {
+    transform: scaleX(-1);
+  }
+  .icon-arrow-right {
+    transform: scaleX(-1);
+  }
+
+  /* Language selector popover: abre hacia la izquierda */
+  .lang-popover {
+    left: 0;
+    right: auto;
+  }
+
+  /* Game controls: flip order */
+  .game-controls {
+    flex-direction: row-reverse;
+  }
+
+  /* Indicadores de fila/columna */
+  .row-indicator {
+    margin-inline-start: var(--space-2);
+    margin-inline-end: 0;
+  }
+}
