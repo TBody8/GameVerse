@@ -122,3 +122,31 @@ export function playBootSound(): void {
     })
   } catch {}
 }
+
+// Sonido de barrido de frecuencia (swoosh/ warp espacial de neón) al cargar juego
+export function playSwooshSound(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'triangle'
+    
+    // Barrido de frecuencia ascendente rápido y masivo
+    osc.frequency.setValueAtTime(80, now)
+    osc.frequency.exponentialRampToValueAtTime(1800, now + 0.55)
+
+    // Ajuste de ganancia para una entrada y salida fluidas
+    gain.gain.setValueAtTime(0.0, now)
+    gain.gain.linearRampToValueAtTime(0.08, now + 0.15)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + 0.55)
+  } catch {}
+}

@@ -6,9 +6,11 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { playTick, playBootSound } from '@/utils/audio'
 import ConsoleHeader from '@/components/ui/ConsoleHeader'
+import { usePageTransition } from '@/components/layout/PageTransitionWrapper'
 
 export default function HomePage() {
   const cardsRef = useRef<HTMLDivElement>(null)
+  const { navigateWithTransition } = usePageTransition()
 
   useEffect(() => {
     // Intentar reproducir sonido de inicialización al cargar
@@ -72,7 +74,25 @@ export default function HomePage() {
             <Link
               key={game.id}
               href={game.available ? `/game/${game.id}` : '#'}
-              onClick={() => playTick()}
+              onClick={(e) => {
+                if (game.available) {
+                  e.preventDefault()
+                  playTick()
+                  
+                  // Efecto de rebote del cartucho antes del warp
+                  gsap.to(e.currentTarget, {
+                    scale: 1.05,
+                    y: -12,
+                    boxShadow: 'var(--shadow-neon-glow-hover)',
+                    borderColor: 'var(--color-accent-hover)',
+                    duration: 0.2,
+                    ease: 'back.out(2)',
+                    onComplete: () => {
+                      navigateWithTransition(`/game/${game.id}`)
+                    }
+                  })
+                }
+              }}
               style={{
                 display: 'flex',
                 flexDirection: 'column',

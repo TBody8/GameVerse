@@ -1,6 +1,7 @@
 import { Link } from 'wouter'
 import { ArrowLeft, ArrowCounterClockwise } from '@phosphor-icons/react'
 import { playTick } from '@/utils/audio'
+import { usePageTransition } from '@/components/layout/PageTransitionWrapper'
 
 interface GameHeaderProps {
   title: string
@@ -10,6 +11,8 @@ interface GameHeaderProps {
 }
 
 export default function GameHeader({ title, difficulty, time, onReset }: GameHeaderProps) {
+  const { navigateWithTransition } = usePageTransition()
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
@@ -31,7 +34,11 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
         <Link
           href="/"
-          onClick={() => playTick()}
+          onClick={(e) => {
+            e.preventDefault()
+            playTick()
+            navigateWithTransition('/')
+          }}
           className="icon-arrow-left neon-glow-hover"
           style={{
             display: 'flex',
