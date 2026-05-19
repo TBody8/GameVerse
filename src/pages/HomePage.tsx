@@ -5,6 +5,7 @@ import { Train, Globe } from '@phosphor-icons/react'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { playTick, playBootSound } from '@/utils/audio'
+import ScrambleText from '@/components/ui/ScrambleText'
 
 export default function HomePage() {
   const cardsRef = useRef<HTMLDivElement>(null)
@@ -53,7 +54,7 @@ export default function HomePage() {
             textShadow: 'var(--shadow-neon-text)',
           }}
         >
-          [ SELECCIONAR CARTUCHO ]
+          <ScrambleText text="[ SELECCIONAR CARTUCHO ]" duration={900} delay={100} />
         </h1>
         <p
           style={{
