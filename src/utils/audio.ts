@@ -150,3 +150,29 @@ export function playSwooshSound(): void {
     osc.stop(now + 0.55)
   } catch {}
 }
+
+// Micro-clics analógicos rápidos (bips de datos de neón) para el efecto Scramble de escritura
+export function playTypeSound(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'sine'
+    // Frecuencia aguda aleatoria para realismo cibernético
+    const freq = 1200 + Math.random() * 400
+    osc.frequency.setValueAtTime(freq, now)
+
+    // Ganancia bajísima para que sea un murmullo digital sutil y decaimiento en 12ms
+    gain.gain.setValueAtTime(0.015, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.012)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + 0.012)
+  } catch {}
+}

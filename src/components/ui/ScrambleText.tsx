@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { playTypeSound } from '@/utils/audio'
 
 interface ScrambleTextProps {
   text: string
@@ -24,6 +25,11 @@ export default function ScrambleText({ text, duration = 900, delay = 100, onComp
       const update = (now: number) => {
         const elapsed = now - startTime
         const progress = Math.min(elapsed / duration, 1)
+        
+        // Si la decodificación está activa, emitir micro-clics rítmicos de terminal
+        if (progress < 1 && Math.random() > 0.45) {
+          playTypeSound()
+        }
         
         // Progreso escalonado de izquierda a derecha
         const revealIndex = Math.floor(progress * text.length)
