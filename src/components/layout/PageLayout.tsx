@@ -13,10 +13,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
       <div className="handheld-bezel">
         {/* Cabina superior del dispositivo / Chasis Hardware */}
         <div className="handheld-hardware-bar">
-          <span>[ GAMEVERSE CONSOLE OS V1.0.0 ]</span>
+          <span className="hardware-title-desktop">[ GAMEVERSE CONSOLE OS V1.0.0 ]</span>
+          <span className="hardware-title-mobile">[ GV-OS V1.0 ]</span>
           <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
             <span>● OFFLINE</span>
-            <span style={{ color: 'var(--color-accent-text)' }}>● BATTERY: 100%</span>
+            <span style={{ color: 'var(--color-accent-text)' }}>● 100%</span>
           </div>
         </div>
 

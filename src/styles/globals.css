@@ -286,7 +286,7 @@ ul, ol {
   background-color: var(--color-canvas);
   color: var(--color-text-primary);
   position: relative;
-  padding: var(--space-2) var(--space-2); /* Margen externo mínimo en móviles */
+  padding: 0; /* Sin margen externo en móviles */
 }
 
 @media (min-width: 768px) {
@@ -303,11 +303,18 @@ ul, ol {
   max-width: var(--max-w-content);
   margin: 0 auto;
   background-color: var(--color-surface);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: none; /* Sin borde en móviles */
+  border-radius: 0; /* Sin redondeado exterior en móviles para rellenar la pantalla completa */
   box-shadow: var(--shadow-neon-glow);
   overflow: hidden;
   position: relative;
+}
+
+@media (min-width: 768px) {
+  .handheld-bezel {
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
 }
 
 .handheld-main {
@@ -372,5 +379,23 @@ ul, ol {
 @media (min-width: 768px) {
   .handheld-hardware-bar {
     padding: 0 var(--space-10);
+  }
+}
+
+.hardware-title-mobile {
+  display: inline;
+}
+
+.hardware-title-desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hardware-title-mobile {
+    display: none;
+  }
+  
+  .hardware-title-desktop {
+    display: inline;
   }
 }
