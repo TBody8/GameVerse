@@ -38,15 +38,21 @@ export function PageTransitionProvider({ children }: PageTransitionProviderProps
     // Acelerar parpadeo de scanline CRT sutilmente de fondo
     document.body.style.setProperty('--flicker-speed', '0.04s')
 
+    const isGoingBack = to === '/'
+    
+    // Configurar la escala de salida y entrada según la inercia del movimiento
+    const exitScale = isGoingBack ? 0.04 : 3.5
+    const entryStartScale = isGoingBack ? 0.4 : 1.08
+
     const tl = gsap.timeline({
       onComplete: () => {
         // Actualizar la ruta real de wouter
         setLocation(to)
         
-        // Fase de llegada: zoom suave desde atrás
+        // Fase de llegada: zoom desde atrás (warp in) o desde el frente (warp out)
         gsap.fromTo(
           screen,
-          { scale: 1.08, filter: 'blur(10px)' },
+          { scale: entryStartScale, filter: 'blur(10px)' },
           {
             scale: 1,
             filter: 'blur(0px)',
@@ -62,19 +68,19 @@ export function PageTransitionProvider({ children }: PageTransitionProviderProps
       },
     })
 
-    // Animación de salida: Zoom masivo + Desenfoque Radial sutil (efecto warp)
+    // Animación de salida: Zoom masivo + Desenfoque sutil (efecto warp de ida o de vuelta)
     tl.to(screen, {
-      scale: 0.94,
+      scale: isGoingBack ? 1.06 : 0.94, // Ligero retroceso de compresión antes del disparo
       filter: 'blur(4px)',
       duration: 0.2,
       ease: 'power2.in',
     })
     .to(screen, {
-      scale: 3.5,
+      scale: exitScale,
       filter: 'blur(16px)',
       opacity: 0,
       duration: 0.45,
-      ease: 'power3.in',
+      ease: isGoingBack ? 'power3.inOut' : 'power3.in',
     })
     .fromTo(
       overlay,
