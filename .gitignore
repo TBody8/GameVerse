@@ -39,4 +39,6 @@ Thumbs.db
 
 # OpenCode tool
 .opencode/
+.specify/
 ECC-main.zip
+gestor-promts/
