@@ -6,7 +6,9 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      plugins: [['@lingui/swc-plugin', {}]]
+    }),
     lingui(),
     VitePWA({
       registerType: 'autoUpdate',
@@ -39,17 +41,17 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'fav.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'fav.png',
             sizes: '512x512',
             type: 'image/png',
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'fav.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
@@ -58,6 +60,9 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    host: true,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

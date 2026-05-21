@@ -17,14 +17,18 @@
 
 ## 2. Estado Actual del Proyecto
 
-**Fase**: Implementación activa  
-**Último hito completado**: Constitution + AGENTS.md (Fase 0)  
-**Próxima tarea**: Scaffolding del proyecto (Fase 1)
+**Fase**: Pulido y Expansión  
+**Último hito completado**: Scaffolding base e implementación de 5 minijuegos iniciales (Fase 1 y 2)  
+**Próxima tarea**: Revisión, QA, y decisión de siguientes pasos (Fase 3)
 
 ### Juegos implementados
 | Juego | Estado | Ruta | Prompt |
 |-------|--------|------|--------|
-| Train Tracks (Vías de Tren) | Pendiente | `/game/train-tracks` | `games_promts/train_tracks.md` |
+| Train Tracks (Vías de Tren) | Completado | `/game/train-tracks` | `games_promts/train_tracks.md` |
+| Battleships | Completado | `/game/battleships` | `games_promts/BATTLESHIPS (SOLITAIRE NAVAL).md` |
+| Bridges | Completado | `/game/bridges` | `games_promts/BRIDGES (HASHIWOKAKERO).md` |
+| Kakuro | Completado | `/game/kakuro` | `games_promts/KAKURO (CRUCIGRAMA MATEMÁTICO).md` |
+| Slitherlink | Completado | `/game/slitherlink` | `games_promts/SLITHERLINK (EL CERCADO).md` |
 
 ### Juegos pendientes de especificación
 *(El usuario añadirá nuevos prompts en `/games_promts/` cuando los tenga listos)*

@@ -46,7 +46,9 @@ export default function PageLayout({ children }: PageLayoutProps) {
           <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
             <span>● OFFLINE</span>
             <span style={{ color: 'var(--color-accent-text)', textShadow: 'var(--shadow-neon-text)' }}>
-              ● {batteryLevel}{batteryLevel !== '∞' ? '%' : ''}
+              {batteryLevel.isSupported
+                ? `● ${batteryLevel.level}%${batteryLevel.isCharging ? ' ⚡' : ''}`
+                : '● PWR OK'}
             </span>
           </div>
         </div>

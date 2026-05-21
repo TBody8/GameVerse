@@ -20,8 +20,19 @@ function getStoredLocale(): Locale {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored && stored in LOCALES) return stored as Locale
   } catch {
-    // localStorage no disponible (modo privado, etc.)
+    // localStorage no disponible
   }
+
+  // Detectar idioma del sistema operativo / navegador automáticamente
+  try {
+    const browserLang = navigator.language.split('-')[0] as Locale
+    if (browserLang && browserLang in LOCALES) {
+      return browserLang
+    }
+  } catch {
+    // navigator no disponible
+  }
+
   return DEFAULT_LOCALE
 }
 

@@ -1,29 +1,29 @@
 // Tokens de diseño exportados para uso en TypeScript/JS
-// Usar variables CSS en componentes cuando sea posible
+// Sincronizado con la paleta OLED neon de globals.css
 
 export const colors = {
-  canvas: '#F7F6F3',
-  surface: '#FFFFFF',
-  surface2: '#F9F9F8',
-  border: '#EAEAEA',
-  borderSubtle: 'rgba(0, 0, 0, 0.06)',
-  textPrimary: '#2F3437',
-  textSecondary: '#787774',
-  textInverse: '#FFFFFF',
-  textDisabled: '#B0ADAA',
+  canvas: '#060907',
+  surface: '#0E1310',
+  surface2: '#161F1A',
+  border: 'rgba(5, 150, 105, 0.25)',
+  borderSubtle: 'rgba(5, 150, 105, 0.12)',
+  textPrimary: '#E1F8EC',
+  textSecondary: '#709F85',
+  textInverse: '#060907',
+  textDisabled: '#354F41',
   accent: '#059669',
-  accentHover: '#047857',
-  accentActive: '#065F46',
-  accentSubtle: '#D1FAE5',
-  accentText: '#065F46',
+  accentHover: '#10B981',
+  accentActive: '#047857',
+  accentSubtle: 'rgba(5, 150, 105, 0.15)',
+  accentText: '#34D399',
   success: '#059669',
-  successSubtle: '#D1FAE5',
-  error: '#DC2626',
-  errorSubtle: '#FEE2E2',
-  warning: '#D97706',
-  warningSubtle: '#FEF3C7',
-  btnPrimaryBg: '#111111',
-  btnPrimaryHover: '#333333',
+  successSubtle: 'rgba(5, 150, 105, 0.2)',
+  error: '#EF4444',
+  errorSubtle: 'rgba(239, 68, 68, 0.2)',
+  warning: '#F59E0B',
+  warningSubtle: 'rgba(245, 158, 11, 0.2)',
+  btnPrimaryBg: '#10B981',
+  btnPrimaryHover: '#34D399',
 } as const
 
 export const fonts = {
@@ -32,14 +32,14 @@ export const fonts = {
 } as const
 
 export const radius = {
-  sm: '4px',
-  md: '8px',
-  lg: '12px',
+  sm: '6px',
+  md: '12px',
+  lg: '20px',
   pill: '9999px',
 } as const
 
 export const transitions = {
   fast: '150ms cubic-bezier(0.16, 1, 0.3, 1)',
-  base: '200ms cubic-bezier(0.16, 1, 0.3, 1)',
+  base: '250ms cubic-bezier(0.16, 1, 0.3, 1)',
   slow: '600ms cubic-bezier(0.16, 1, 0.3, 1)',
 } as const

@@ -1,17 +1,30 @@
 import { playVictorySound, playTick } from '@/utils/audio'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { useStats } from '@/hooks/useStats'
+import { formatTime } from '@/utils/storage'
+import { useLocation } from 'wouter'
 
 interface VictoryScreenProps {
   time: number
   onNext: () => void
   onReset: () => void
+  gameId?: string
+  difficulty?: string
+  message?: string
 }
 
-export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenProps) {
+export default function VictoryScreen({ time, onNext, onReset, gameId, difficulty, message }: VictoryScreenProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const { recordWin } = useStats()
+  const [, navigate] = useLocation()
 
   useEffect(() => {
+    // Solo guardar victoria una vez cuando se muestra la pantalla
+    if (gameId && difficulty) {
+      recordWin(gameId, difficulty, time)
+    }
+
     // Reproducir melodía triunfal de la consola
     playVictorySound()
 
@@ -22,13 +35,7 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
         { opacity: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.4)' }
       )
     }
-  }, [])
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
+  }, [gameId, difficulty, time, recordWin])
 
   return (
     <div
@@ -97,7 +104,7 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
             marginBottom: 'var(--space-6)',
           }}
         >
-          El circuito eléctrico de las vías está cerrado.
+          {message || '¡Has completado el puzzle con éxito!'}
         </p>
 
         {/* Cronómetro Nixie final */}
@@ -197,6 +204,34 @@ export default function VictoryScreen({ time, onNext, onReset }: VictoryScreenPr
             }}
           >
             REINICIAR
+          </button>
+
+          <button
+            onClick={() => {
+              playTick()
+              navigate('/')
+            }}
+            style={{
+              width: '100%',
+              padding: 'var(--space-3)',
+              backgroundColor: 'transparent',
+              color: 'var(--color-text-secondary)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-md)',
+              fontWeight: 600,
+              fontSize: 'var(--text-sm)',
+              transition: 'all var(--transition-fast)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'var(--color-surface-2)'
+              e.currentTarget.style.color = 'var(--color-text-primary)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent'
+              e.currentTarget.style.color = 'var(--color-text-secondary)'
+            }}
+          >
+            VOLVER AL INICIO
           </button>
         </div>
       </div>

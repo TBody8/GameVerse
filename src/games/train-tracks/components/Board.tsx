@@ -1,4 +1,4 @@
-import { type CellState, type Puzzle } from '../logic/types'
+import { type CellState, type Puzzle, type Position } from '../logic/types'
 import { type ValidationResult } from '../logic/validator'
 import Cell from './Cell'
 import RowIndicator from './RowIndicator'
@@ -8,15 +8,16 @@ interface BoardProps {
   grid: CellState[][]
   puzzle: Puzzle
   validation: ValidationResult
+  hintedCell: Position | null
   onCellClick: (row: number, col: number) => void
 }
 
-export default function Board({ grid, puzzle, validation, onCellClick }: BoardProps) {
+export default function Board({ grid, puzzle, validation, hintedCell, onCellClick }: BoardProps) {
   const size = puzzle.gridSize
 
   // Tamaño total de la cuadrícula SVG
   const width = size * 100 + 80
-  const height = size * 100 + 40
+  const height = size * 100 + 120
 
   const colCounts = puzzle.colCounts
   const rowCounts = puzzle.rowCounts
@@ -67,6 +68,7 @@ export default function Board({ grid, puzzle, validation, onCellClick }: BoardPr
                 grid={grid}
                 start={puzzle.start}
                 end={puzzle.end}
+                isHinted={hintedCell !== null && hintedCell.row === rowIndex && hintedCell.col === colIndex}
                 onClick={() => onCellClick(rowIndex, colIndex)}
               />
             ))}

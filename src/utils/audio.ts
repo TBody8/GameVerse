@@ -151,6 +151,35 @@ export function playSwooshSound(): void {
   } catch {}
 }
 
+// Sonido elegante al pedir una pista
+export function playHintSound(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    // Acorde mágico brillante: E5, B5, E6
+    const notes = [659.25, 987.77, 1318.51]
+
+    notes.forEach((freq, index) => {
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+
+      osc.type = 'sine'
+      osc.frequency.setValueAtTime(freq, now + index * 0.04)
+
+      gain.gain.setValueAtTime(0.0, now + index * 0.04)
+      gain.gain.linearRampToValueAtTime(0.04, now + index * 0.04 + 0.02)
+      gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.04 + 0.3)
+
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+
+      osc.start(now + index * 0.04)
+      osc.stop(now + index * 0.04 + 0.4)
+    })
+  } catch {}
+}
+
 // Micro-clics analógicos rápidos (bips de datos de neón) para el efecto Scramble de escritura
 export function playTypeSound(): void {
   try {
@@ -161,11 +190,9 @@ export function playTypeSound(): void {
     const gain = ctx.createGain()
 
     osc.type = 'sine'
-    // Frecuencia aguda aleatoria para realismo cibernético
     const freq = 1200 + Math.random() * 400
     osc.frequency.setValueAtTime(freq, now)
 
-    // Ganancia bajísima para que sea un murmullo digital sutil y decaimiento en 12ms
     gain.gain.setValueAtTime(0.015, now)
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.012)
 
@@ -174,5 +201,125 @@ export function playTypeSound(): void {
 
     osc.start(now)
     osc.stop(now + 0.012)
+  } catch {}
+}
+
+// Sonido sutil al seleccionar una isla
+export function playSelect(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(800, now)
+    osc.frequency.exponentialRampToValueAtTime(1000, now + 0.04)
+
+    gain.gain.setValueAtTime(0.04, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + 0.06)
+  } catch {}
+}
+
+// Sonido suave al deseleccionar una isla
+export function playDeselect(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(600, now)
+    osc.frequency.exponentialRampToValueAtTime(400, now + 0.05)
+
+    gain.gain.setValueAtTime(0.03, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + 0.05)
+  } catch {}
+}
+
+// Sonido al colocar un puente nuevo
+export function playBridgePlace(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(400, now)
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.08)
+
+    gain.gain.setValueAtTime(0.05, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + 0.1)
+  } catch {}
+}
+
+// Sonido al upgrade a puente doble
+export function playBridgeUpgrade(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'triangle'
+    osc.frequency.setValueAtTime(600, now)
+    osc.frequency.exponentialRampToValueAtTime(900, now + 0.05)
+
+    gain.gain.setValueAtTime(0.04, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + 0.1)
+  } catch {}
+}
+
+// Sonido al borrar un puente
+export function playBridgeRemove(): void {
+  try {
+    const ctx = getAudioContext()
+    const now = ctx.currentTime
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(500, now)
+    osc.frequency.exponentialRampToValueAtTime(200, now + 0.06)
+
+    gain.gain.setValueAtTime(0.04, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + 0.06)
   } catch {}
 }

@@ -1,24 +1,19 @@
-import { Link } from 'wouter'
-import { ArrowLeft, ArrowCounterClockwise } from '@phosphor-icons/react'
-import { playTick } from '@/utils/audio'
-import { usePageTransition } from '@/components/layout/PageTransitionWrapper'
+import { ArrowLeft, ArrowCounterClockwise, MagicWand, DiceFive, Info } from '@phosphor-icons/react'
+import { playTick, playHintSound } from '@/utils/audio'
+import { formatTime } from '@/utils/storage'
 
 interface GameHeaderProps {
   title: string
   difficulty: string
   time: number
   onReset: () => void
+  onNext?: () => void
+  onBack: () => void
+  onHint?: () => void
+  onInfo?: () => void
 }
 
-export default function GameHeader({ title, difficulty, time, onReset }: GameHeaderProps) {
-  const { navigateWithTransition } = usePageTransition()
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
-
+export default function GameHeader({ title, difficulty, time, onReset, onNext, onBack, onHint, onInfo }: GameHeaderProps) {
   return (
     <div
       style={{
@@ -32,12 +27,11 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
-        <Link
-          href="/"
+        <button
           onClick={(e) => {
             e.preventDefault()
             playTick()
-            navigateWithTransition('/')
+            onBack()
           }}
           className="icon-arrow-left neon-glow-hover"
           style={{
@@ -51,11 +45,11 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
             color: 'var(--color-text-primary)',
             backgroundColor: 'var(--color-surface-2)',
             transition: 'all var(--transition-fast)',
-            textDecoration: 'none',
+            cursor: 'pointer'
           }}
         >
           <ArrowLeft size={18} weight="bold" />
-        </Link>
+        </button>
 
         <div>
           <h1
@@ -103,6 +97,87 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
           {formatTime(time)}
         </div>
 
+        {/* Info (Instrucciones) */}
+        {onInfo && (
+          <button
+            onClick={() => {
+              playTick()
+              onInfo()
+            }}
+            aria-label="Información del juego"
+            className="neon-glow-hover"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '40px',
+              height: '40px',
+              border: '2px solid var(--color-border)',
+              borderRadius: 'var(--radius-md)',
+              color: 'var(--color-text-primary)',
+              backgroundColor: 'var(--color-surface-2)',
+              transition: 'all var(--transition-fast)',
+              cursor: 'pointer'
+            }}
+          >
+            <Info size={20} weight="bold" />
+          </button>
+        )}
+
+        {/* Varita (Pista) */}
+        {onHint && (
+          <button
+            onClick={() => {
+              playHintSound()
+              onHint()
+            }}
+            aria-label="Pista"
+            className="neon-glow-hover"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '40px',
+              height: '40px',
+              border: '2px solid var(--color-border)',
+              borderRadius: 'var(--radius-md)',
+              color: 'var(--color-warning)',
+              backgroundColor: 'var(--color-surface-2)',
+              transition: 'all var(--transition-fast)',
+              cursor: 'pointer'
+            }}
+          >
+            <MagicWand size={18} weight="bold" />
+          </button>
+        )}
+
+        {/* Generar Nuevo Tablero */}
+        {onNext && (
+          <button
+            onClick={() => {
+              playTick()
+              onNext()
+            }}
+            aria-label="Generar nuevo nivel"
+            className="neon-glow-hover"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '40px',
+              height: '40px',
+              border: '2px solid var(--color-border)',
+              borderRadius: 'var(--radius-md)',
+              color: 'var(--color-accent-text)',
+              backgroundColor: 'var(--color-surface-2)',
+              transition: 'all var(--transition-fast)',
+              cursor: 'pointer'
+            }}
+          >
+            <DiceFive size={20} weight="bold" />
+          </button>
+        )}
+
         {/* Reiniciar Táctil */}
         <button
           onClick={() => {
@@ -119,9 +194,10 @@ export default function GameHeader({ title, difficulty, time, onReset }: GameHea
             height: '40px',
             border: '2px solid var(--color-border)',
             borderRadius: 'var(--radius-md)',
-            color: 'var(--color-text-primary)',
+            color: 'var(--color-error)',
             backgroundColor: 'var(--color-surface-2)',
             transition: 'all var(--transition-fast)',
+            cursor: 'pointer'
           }}
         >
           <ArrowCounterClockwise size={18} weight="bold" />

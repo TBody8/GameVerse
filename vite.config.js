@@ -5,7 +5,9 @@ import { lingui } from '@lingui/vite-plugin';
 import path from 'path';
 export default defineConfig({
     plugins: [
-        react(),
+        react({
+            plugins: [['@lingui/swc-plugin', {}]]
+        }),
         lingui(),
         VitePWA({
             registerType: 'autoUpdate',
@@ -57,6 +59,9 @@ export default defineConfig({
             },
         }),
     ],
+    server: {
+        host: true,
+    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),

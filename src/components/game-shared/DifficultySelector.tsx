@@ -1,19 +1,15 @@
-import { type Difficulty } from '@/games/train-tracks/logic/types'
+import { type Difficulty } from '@/types/game'
 import { playTick } from '@/utils/audio'
 
 interface DifficultySelectorProps {
   current: Difficulty
   onChange: (difficulty: Difficulty) => void
+  labels: Record<Difficulty, string>
 }
 
-const DIFFICULTIES: { value: Difficulty; label: string }[] = [
-  { value: 'easy', label: '4x4' },
-  { value: 'medium', label: '6x6' },
-  { value: 'hard', label: '8x8' },
-  { value: 'expert', label: '10x10' },
-]
+export default function DifficultySelector({ current, onChange, labels }: DifficultySelectorProps) {
+  const difficulties: Difficulty[] = ['easy', 'medium', 'hard', 'expert']
 
-export default function DifficultySelector({ current, onChange }: DifficultySelectorProps) {
   return (
     <div
       style={{
@@ -28,12 +24,12 @@ export default function DifficultySelector({ current, onChange }: DifficultySele
         boxShadow: 'var(--shadow-neon-glow)',
       }}
     >
-      {DIFFICULTIES.map((diff) => (
+      {difficulties.map((diff) => (
         <button
-          key={diff.value}
+          key={diff}
           onClick={() => {
             playTick()
-            onChange(diff.value)
+            onChange(diff)
           }}
           style={{
             padding: 'var(--space-2) var(--space-4)',
@@ -41,13 +37,13 @@ export default function DifficultySelector({ current, onChange }: DifficultySele
             fontSize: 'var(--text-xs)',
             fontWeight: 700,
             letterSpacing: 'var(--tracking-wide)',
-            backgroundColor: current === diff.value ? 'var(--color-accent)' : 'transparent',
-            color: current === diff.value ? '#060907' : 'var(--color-text-secondary)',
+            backgroundColor: current === diff ? 'var(--color-accent)' : 'transparent',
+            color: current === diff ? '#060907' : 'var(--color-text-secondary)',
             transition: 'all var(--transition-fast)',
-            textShadow: current === diff.value ? 'none' : 'none',
+            textShadow: 'none',
           }}
         >
-          {diff.label}
+          {labels[diff]}
         </button>
       ))}
     </div>

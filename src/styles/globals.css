@@ -101,6 +101,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -177,6 +178,8 @@ a {
   color: var(--color-accent-text);
   text-decoration: none;
   transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 a:hover {
@@ -200,6 +203,8 @@ button {
   font-weight: 600;
   color: var(--color-text-primary);
   transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 button:active {

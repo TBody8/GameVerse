@@ -1,3 +1,5 @@
+export { type Difficulty } from '@/types/game'
+
 export type CellState = 'empty' | 'track' | 'blocked'
 
 export interface Position {
@@ -5,7 +7,6 @@ export interface Position {
   col: number
 }
 
-export type Difficulty = 'easy' | 'medium' | 'hard' | 'expert'
 
 export interface Puzzle {
   id: string

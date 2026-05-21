@@ -8,7 +8,7 @@
   text-align: right;
 
   /* Header layout */
-  [dir='rtl'] .header-inner {
+  [dir='rtl'] .handheld-header-inner {
     flex-direction: row-reverse;
   }
 

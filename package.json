@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -21,14 +21,23 @@
     "wouter": "^3.3.5"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.28.5",
+    "@lingui/babel-plugin-lingui-macro": "^5.9.5",
     "@lingui/cli": "^4.14.0",
-    "@lingui/swc-plugin": "^4.1.0",
+    "@lingui/macro": "^4.14.0",
+    "@lingui/swc-plugin": "^6.0.0",
     "@lingui/vite-plugin": "^4.14.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react-swc": "^3.7.2",
+    "babel-plugin-macros": "^3.1.0",
+    "jsdom": "^28.1.0",
     "typescript": "^5.6.3",
     "vite": "^6.0.5",
-    "vite-plugin-pwa": "^0.21.1"
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^4.1.7"
   }
 }

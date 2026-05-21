@@ -1,19 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import ScrambleText from './ScrambleText'
+import { t } from '@lingui/macro'
 
 export default function ConsoleHeader() {
-  // 'scramble' -> 'blink' -> 'collapse'
   const [stage, setStage] = useState<'scramble' | 'blink' | 'collapse'>('scramble')
 
   const containerRef = useRef<HTMLHeadingElement>(null)
-  const prefixGroupRef = useRef<HTMLSpanElement>(null) // Contiene "SYS.LOAD //"
-  const sysLoadTextRef = useRef<HTMLSpanElement>(null) // Contiene solo "SYS.LOAD"
-  const slashTextRef = useRef<HTMLSpanElement>(null) // Contiene " //"
+  const prefixGroupRef = useRef<HTMLSpanElement>(null)
+  const sysLoadTextRef = useRef<HTMLSpanElement>(null)
+  const slashTextRef = useRef<HTMLSpanElement>(null)
+
+  const seleccionarCartuchoText = t`SELECCIONAR CARTUCHO`
 
   useEffect(() => {
     if (stage === 'blink') {
-      // Estado 2: Parpadear SOLO "SYS.LOAD" lentamente (efecto neón analógico)
       const blinkTween = gsap.fromTo(
         sysLoadTextRef.current,
         { opacity: 0.3, filter: 'drop-shadow(0 0 1px var(--color-accent))' },
@@ -27,7 +28,6 @@ export default function ConsoleHeader() {
         }
       )
 
-      // Después de 2.5s, transicionar el colapso de forma cinética
       const timer = setTimeout(() => {
         blinkTween.kill()
         setStage('collapse')
@@ -40,19 +40,15 @@ export default function ConsoleHeader() {
     }
 
     if (stage === 'collapse') {
-      // Estado 3: Animación cinéticamente elástica y profesional usando GSAP
       const tl = gsap.timeline()
 
-      // Desvanecer el texto y las barras diagonales a la izquierda
       tl.to([sysLoadTextRef.current, slashTextRef.current], {
         opacity: 0,
         x: -16,
         duration: 0.35,
         stagger: 0.05,
         ease: 'power3.in',
-      })
-      // Colapsar el ancho elásticamente y juntar la flecha
-      .to(
+      }).to(
         prefixGroupRef.current,
         {
           width: 0,
@@ -78,10 +74,8 @@ export default function ConsoleHeader() {
         lineHeight: 1,
       }}
     >
-      {/* Flecha Izquierda Fija */}
       <span style={{ marginRight: 'var(--space-2)', userSelect: 'none' }}>◀</span>
 
-      {/* Bloque Dinámico Colapsable: "SYS.LOAD //" */}
       <span
         ref={prefixGroupRef}
         style={{
@@ -107,21 +101,19 @@ export default function ConsoleHeader() {
         )}
       </span>
 
-      {/* Título Principal Fijo */}
       <span>
         {stage === 'scramble' ? (
           <ScrambleText
-            text="SELECCIONAR CARTUCHO"
+            text={seleccionarCartuchoText}
             duration={900}
             delay={200}
             onComplete={() => setStage('blink')}
           />
         ) : (
-          "SELECCIONAR CARTUCHO"
+          seleccionarCartuchoText
         )}
       </span>
 
-      {/* Flecha Derecha Fija */}
       <span style={{ marginLeft: 'var(--space-2)', userSelect: 'none' }}>▶</span>
     </h1>
   )

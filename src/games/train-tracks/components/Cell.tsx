@@ -1,7 +1,7 @@
 import { type CellState, type Position } from '../logic/types'
 import { getTrackPiece } from '../logic/orientation'
 import Track from './Track'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { playTick, playBlock } from '@/utils/audio'
 
@@ -12,15 +12,34 @@ interface CellProps {
   grid: CellState[][]
   start: Position & { dir: 'N' | 'S' | 'E' | 'W' }
   end: Position & { dir: 'N' | 'S' | 'E' | 'W' }
+  isHinted?: boolean
   onClick: () => void
 }
 
-export default function Cell({ row, col, state, grid, start, end, onClick }: CellProps) {
+export default function Cell({ row, col, state, grid, start, end, isHinted, onClick }: CellProps) {
   const isStart = row === start.row && col === start.col
   const isEnd = row === end.row && col === end.col
   const isFixed = isStart || isEnd
 
   const cellRef = useRef<SVGGElement>(null)
+
+  // Animación de Hint
+  useEffect(() => {
+    if (isHinted && cellRef.current) {
+      // Fade in elegante + Palpitamiento suave de escala
+      const tl = gsap.timeline()
+      tl.fromTo(
+        cellRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1.1, duration: 0.3, ease: 'power2.out' }
+      )
+      .to(cellRef.current, {
+        scale: 1,
+        duration: 0.5,
+        ease: 'elastic.out(1.2, 0.5)'
+      })
+    }
+  }, [isHinted])
 
   const handleClick = () => {
     if (isFixed) return

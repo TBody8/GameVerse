@@ -1,14 +1,27 @@
 import { useEffect, useState } from 'react'
 
-export function useBattery() {
-  const [level, setLevel] = useState<string>('∞')
+interface BatteryState {
+  level: string       // '85' si hay datos reales, '' si no
+  isSupported: boolean
+  isCharging: boolean | null
+}
+
+export function useBattery(): BatteryState {
+  const [state, setState] = useState<BatteryState>({
+    level: '',
+    isSupported: false,
+    isCharging: null,
+  })
 
   useEffect(() => {
     let batteryInstance: any = null
 
     const updateBatteryInfo = (battery: any) => {
-      const percentage = Math.round(battery.level * 100)
-      setLevel(`${percentage}`)
+      setState({
+        level: `${Math.round(battery.level * 100)}`,
+        isSupported: true,
+        isCharging: battery.charging ?? null,
+      })
     }
 
     if ('getBattery' in navigator) {
@@ -17,20 +30,21 @@ export function useBattery() {
         updateBatteryInfo(battery)
 
         battery.addEventListener('levelchange', () => updateBatteryInfo(battery))
+        battery.addEventListener('chargingchange', () => updateBatteryInfo(battery))
       }).catch(() => {
-        // En caso de error o bloqueo de seguridad, fallback a infinito
-        setLevel('∞')
+        // API existe pero el navegador la bloqueó (política de privacidad)
+        setState({ level: '', isSupported: false, isCharging: null })
       })
-    } else {
-      setLevel('∞')
     }
+    // Si no existe 'getBattery', el estado inicial ya refleja isSupported: false
 
     return () => {
       if (batteryInstance) {
         batteryInstance.removeEventListener('levelchange', () => updateBatteryInfo(batteryInstance))
+        batteryInstance.removeEventListener('chargingchange', () => updateBatteryInfo(batteryInstance))
       }
     }
   }, [])
 
-  return level
+  return state
 }

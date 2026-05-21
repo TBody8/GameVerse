@@ -32,11 +32,16 @@ export function PageTransitionProvider({ children }: PageTransitionProviderProps
     // Reproducir swoosh de consola warp
     playSwooshSound()
 
-    const screen = document.querySelector('.handheld-bezel')
+    const screen = document.querySelector('.handheld-bezel') as HTMLElement
     const overlay = overlayRef.current
 
     // Acelerar parpadeo de scanline CRT sutilmente de fondo
     document.body.style.setProperty('--flicker-speed', '0.04s')
+
+    if (screen) {
+      // Hardware acceleration hint
+      screen.style.willChange = 'transform, filter, opacity'
+    }
 
     const isGoingBack = to === '/'
     
@@ -49,33 +54,47 @@ export function PageTransitionProvider({ children }: PageTransitionProviderProps
         // Actualizar la ruta real de wouter
         setLocation(to)
         
-        // Fase de llegada: zoom desde atrás (warp in) o desde el frente (warp out)
-        gsap.fromTo(
-          screen,
-          { scale: entryStartScale, filter: 'blur(10px)' },
-          {
-            scale: 1,
-            filter: 'blur(0px)',
-            duration: 0.5,
-            ease: 'power2.out',
-            clearProps: 'all',
-            onComplete: () => {
-              setIsTransitioning(false)
-              document.body.style.setProperty('--flicker-speed', '0.15s') // Resetear parpadeo CRT
-            },
-          }
-        )
+        // Dar tiempo a React para montar la nueva ruta (evitar Jank)
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const newScreen = document.querySelector('.handheld-bezel') as HTMLElement
+            if (newScreen) {
+              newScreen.style.willChange = 'transform, filter, opacity'
+            }
+
+            // Fase de llegada: zoom desde atrás (warp in) o desde el frente (warp out)
+            gsap.fromTo(
+              '.handheld-bezel',
+              { scale: entryStartScale, filter: 'blur(10px)' },
+              {
+                scale: 1,
+                filter: 'blur(0px)',
+                duration: 0.5,
+                ease: 'power2.out',
+                clearProps: 'all',
+                onComplete: () => {
+                  setIsTransitioning(false)
+                  document.body.style.setProperty('--flicker-speed', '0.15s') // Resetear parpadeo CRT
+                  const finalScreen = document.querySelector('.handheld-bezel') as HTMLElement
+                  if (finalScreen) {
+                    finalScreen.style.willChange = 'auto'
+                  }
+                },
+              }
+            )
+          })
+        })
       },
     })
 
     // Animación de salida: Zoom masivo + Desenfoque sutil (efecto warp de ida o de vuelta)
-    tl.to(screen, {
-      scale: isGoingBack ? 1.06 : 0.94, // Ligero retroceso de compresión antes del disparo
+    tl.to('.handheld-bezel', {
+      scale: isGoingBack ? 1.02 : 0.98, // Ligero retroceso de compresión antes del disparo
       filter: 'blur(4px)',
       duration: 0.2,
       ease: 'power2.in',
     })
-    .to(screen, {
+    .to('.handheld-bezel', {
       scale: exitScale,
       filter: 'blur(16px)',
       opacity: 0,
