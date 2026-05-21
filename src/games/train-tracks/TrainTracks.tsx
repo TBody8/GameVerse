@@ -5,7 +5,7 @@ import GameHeaderWidget from '@/components/game-shared/GameHeader'
 import DifficultySelector from '@/components/game-shared/DifficultySelector'
 import VictoryScreen from '@/components/game-shared/VictoryScreen'
 import GameInfoModal from '@/components/game-shared/GameInfoModal'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { usePageTransition } from '@/components/layout/PageTransitionWrapper'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
@@ -42,13 +42,15 @@ export default function TrainTracks() {
     }
   ]
 
+  const handleAnimationComplete = useCallback(() => {
+    setShowVictory(true)
+  }, [])
+
   // Hook para animar el tren al completarse la vía
   useTrainAnimation({
     isVictory: state.isVictory,
     solution: state.puzzle.solution,
-    onComplete: () => {
-      setShowVictory(true)
-    },
+    onComplete: handleAnimationComplete,
   })
 
   const handleDifficultyChange = (diff: any) => {
@@ -124,6 +126,7 @@ export default function TrainTracks() {
         puzzle={state.puzzle}
         validation={state.validation}
         hintedCell={state.hintedCell}
+        connections={state.connections}
         onCellClick={toggleCell}
       />
 

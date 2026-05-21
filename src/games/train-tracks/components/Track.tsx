@@ -132,5 +132,26 @@ export default function Track({ type }: TrackProps) {
     )
   }
 
+  if (type === 'overpass') {
+    return (
+      <g>
+        {/* Vía horizontal debajo */}
+        <TrackLayers
+          center={`M 0,50 L 100,50`}
+          outer={`M 0,42 L 100,42`}
+          inner={`M 0,58 L 100,58`}
+        />
+        {/* Separador para dar efecto de paso elevado (mismo color que el fondo) */}
+        <rect x="36" y="36" width="28" height="28" fill="var(--color-canvas)" opacity="0.9" />
+        {/* Vía vertical por encima */}
+        <TrackLayers
+          center={`M 50,0 L 50,100`}
+          outer={`M 42,0 L 42,100`}
+          inner={`M 58,0 L 58,100`}
+        />
+      </g>
+    )
+  }
+
   return null
 }

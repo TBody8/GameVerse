@@ -71,6 +71,7 @@ export default function Board({ grid, puzzle, validation, hintedCell, onCellClic
                   grid={grid}
                   isFixed={isFixed}
                   isHinted={isHinted}
+                  isInvalid={validation.invalidCells ? validation.invalidCells.some(p => p.row === rowIndex && p.col === colIndex) : false}
                   onClick={() => onCellClick(rowIndex, colIndex)}
                 />
               )

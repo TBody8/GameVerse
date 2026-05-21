@@ -13,10 +13,11 @@ interface CellProps {
   start: Position & { dir: 'N' | 'S' | 'E' | 'W' }
   end: Position & { dir: 'N' | 'S' | 'E' | 'W' }
   isHinted?: boolean
+  connections: string[]
   onClick: () => void
 }
 
-export default function Cell({ row, col, state, grid, start, end, isHinted, onClick }: CellProps) {
+export default function Cell({ row, col, state, grid, start, end, isHinted, connections, onClick }: CellProps) {
   const isStart = row === start.row && col === start.col
   const isEnd = row === end.row && col === end.col
   const isFixed = isStart || isEnd
@@ -63,7 +64,7 @@ export default function Cell({ row, col, state, grid, start, end, isHinted, onCl
     onClick()
   }
 
-  const trackPieceType = getTrackPiece(row, col, grid, start, end)
+  const trackPieceType = getTrackPiece(row, col, grid, start, end, connections)
 
   return (
     <g
@@ -83,7 +84,7 @@ export default function Cell({ row, col, state, grid, start, end, isHinted, onCl
       />
 
       {/* Resplandor de fondo si tiene vía activa */}
-      {state === 'track' && (
+      {(state === 'track' || state === 'overpass') && (
         <rect
           x={col * 100 + 6}
           y={row * 100 + 6}
@@ -111,7 +112,7 @@ export default function Cell({ row, col, state, grid, start, end, isHinted, onCl
       )}
 
       {/* Si tiene vía colocada */}
-      {state === 'track' && (
+      {(state === 'track' || state === 'overpass') && (
         <g transform={`translate(${col * 100}, ${row * 100})`}>
           <Track type={trackPieceType} />
         </g>

@@ -5,6 +5,9 @@ export interface ValidationResult {
   rowStatus: ('incomplete' | 'correct' | 'exceeded')[]
   colStatus: ('incomplete' | 'correct' | 'exceeded')[]
   fleetStatus: { [size: number]: { found: number, required: number } }
+  hasDiagonalTouch?: boolean
+  hasShapeError?: boolean
+  invalidCells: { row: number, col: number }[]
 }
 
 export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationResult {
@@ -50,9 +53,12 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
 
   // Find all ships on the grid (connected components)
   const visited = Array.from({ length: size }, () => Array(size).fill(false))
-  const foundShips: number[] = []
+  const foundShips: { size: number, cells: {r: number, c: number}[] }[] = []
   let hasShapeError = false   // L-shaped / non-straight ship
   let hasDiagonalTouch = false // Two separate ships touching diagonally
+
+  const invalidCellsSet = new Set<string>()
+  const addInvalid = (r: number, c: number) => invalidCellsSet.add(`${r},${c}`)
 
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
@@ -60,11 +66,13 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
         // BFS to find the whole ship
         let shipSize = 0
         const queue: {r: number, c: number}[] = [{r, c}]
+        const currentShip: {r: number, c: number}[] = []
         visited[r][c] = true
         let minR = r, maxR = r, minC = c, maxC = c
 
         while (queue.length > 0) {
           const curr = queue.shift()!
+          currentShip.push(curr)
           shipSize++
           minR = Math.min(minR, curr.r)
           maxR = Math.max(maxR, curr.r)
@@ -88,9 +96,12 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
           ((maxR - minR + 1) === shipSize && (maxC - minC + 1) === 1) ||
           ((maxC - minC + 1) === shipSize && (maxR - minR + 1) === 1)
 
-        if (!isStraight) hasShapeError = true
+        if (!isStraight) {
+          hasShapeError = true
+          currentShip.forEach(pos => addInvalid(pos.r, pos.c))
+        }
 
-        foundShips.push(shipSize)
+        foundShips.push({ size: shipSize, cells: currentShip })
       }
     }
   }
@@ -104,9 +115,10 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
         const nr = r + d[0]
         const nc = c + d[1]
         if (nr >= 0 && nr < size && nc >= 0 && nc < size && grid[nr][nc] === 'ship') {
-          // Ships touching diagonally are always from different ships (orthogonal BFS already connected same-ship cells).
-          // Any diagonal touch between ship cells is illegal in Battleships regardless of which ship they belong to.
+          // Ships touching diagonally are always from different ships
           hasDiagonalTouch = true
+          addInvalid(r, c)
+          addInvalid(nr, nc)
         }
       }
     }
@@ -118,16 +130,31 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
   for (const sizeStr of Object.keys(puzzle.fleet)) {
     const s = parseInt(sizeStr)
     const required = puzzle.fleet[s]
-    const found = foundShips.filter(x => x === s).length
+    const matchingShips = foundShips.filter(x => x.size === s)
+    const found = matchingShips.length
     fleetStatus[s] = { found, required }
-    if (found !== required) fleetOk = false
+    
+    if (found > required) {
+      fleetOk = false
+      matchingShips.forEach(ship => ship.cells.forEach(pos => addInvalid(pos.r, pos.c)))
+    } else if (found < required) {
+      fleetOk = false
+    }
   }
 
   // Also check if they placed ships that aren't in the fleet at all
-  const extraShips = foundShips.filter(s => !puzzle.fleet[s])
-  if (extraShips.length > 0) fleetOk = false
+  const extraShips = foundShips.filter(s => !puzzle.fleet[s.size])
+  if (extraShips.length > 0) {
+    fleetOk = false
+    extraShips.forEach(ship => ship.cells.forEach(pos => addInvalid(pos.r, pos.c)))
+  }
 
   const isValid = allLinesOk && fleetOk && !hasDiagonalTouch && !hasShapeError
 
-  return { isValid, rowStatus, colStatus, fleetStatus }
+  const invalidCells = Array.from(invalidCellsSet).map(str => {
+    const [r, c] = str.split(',')
+    return { row: parseInt(r, 10), col: parseInt(c, 10) }
+  })
+
+  return { isValid, rowStatus, colStatus, fleetStatus, hasDiagonalTouch, hasShapeError, invalidCells }
 }

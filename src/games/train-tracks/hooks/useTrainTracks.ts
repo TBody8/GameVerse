@@ -8,6 +8,8 @@ interface GameState {
   puzzleIndex: number
   puzzle: Puzzle
   grid: CellState[][]
+  connections: Record<string, string[]>
+  history: string[]
   validation: ValidationResult
   isVictory: boolean
   time: number
@@ -52,13 +54,25 @@ function createNewPuzzleState(difficulty: Difficulty): GameState {
   const size = getGridSize(difficulty)
   const puzzle = generatePuzzle(size, getMinLength(size))
   const grid = createInitialGrid(puzzle.gridSize, puzzle.start, puzzle.end)
-  const validation = validatePuzzle(grid, puzzle)
+  
+  const startKey = `${puzzle.start.row},${puzzle.start.col}`
+  const endKey = `${puzzle.end.row},${puzzle.end.col}`
+  
+  const connections: Record<string, string[]> = {
+    [startKey]: [],
+    [endKey]: []
+  }
+  const history = [startKey, endKey]
+
+  const validation = validatePuzzle(grid, puzzle, connections)
 
   return {
     difficulty,
     puzzleIndex: 0,
     puzzle,
     grid,
+    connections,
+    history,
     validation,
     isVictory: false,
     time: 0,
@@ -82,23 +96,191 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const isEnd = row === state.puzzle.end.row && col === state.puzzle.end.col
       if (isStart || isEnd) return state
 
-      const newGrid = state.grid.map((r, ri) =>
-        r.map((c, ci) => {
-          if (ri === row && ci === col) {
-            if (c === 'empty') return 'track'
-            if (c === 'track') return 'blocked'
-            return 'empty'
-          }
-          return c
-        })
-      )
+      const newGrid = state.grid.map(r => [...r])
+      const newConnections = { ...state.connections }
+      const newHistory = [...state.history]
+      const key = `${row},${col}`
 
-      const validation = validatePuzzle(newGrid, state.puzzle)
+      if (state.grid[row][col] === 'empty') {
+        newGrid[row][col] = 'track'
+        newHistory.push(key)
+        newConnections[key] = []
+
+        const dirs = [[-1,0], [1,0], [0,-1], [0,1]]
+        const validNeighbors: string[] = []
+        for (const [dr, dc] of dirs) {
+          const nr = row + dr, nc = col + dc
+          if (nr >= 0 && nr < state.puzzle.gridSize && nc >= 0 && nc < state.puzzle.gridSize) {
+            const nKey = `${nr},${nc}`
+            if (newGrid[nr][nc] === 'track' || newGrid[nr][nc] === 'overpass') {
+              const isNStart = nr === state.puzzle.start.row && nc === state.puzzle.start.col
+              const isNEnd = nr === state.puzzle.end.row && nc === state.puzzle.end.col
+              const maxConns = (isNStart || isNEnd) ? 1 : (newGrid[nr][nc] === 'overpass' ? 4 : 2)
+              if ((newConnections[nKey]?.length || 0) < maxConns) {
+                validNeighbors.push(nKey)
+              }
+            }
+          }
+        }
+        validNeighbors.sort((a, b) => newHistory.indexOf(b) - newHistory.indexOf(a))
+        const toConnect = validNeighbors.slice(0, 2)
+        for (const nKey of toConnect) {
+          newConnections[key].push(nKey)
+          newConnections[nKey] = [...(newConnections[nKey] || []), key]
+        }
+
+      } else if (state.grid[row][col] === 'track') {
+        const lastKey = newHistory.length > 0 ? newHistory[newHistory.length - 1] : null
+        let isDrawingInto = false
+        if (lastKey && lastKey !== key) {
+           const [lrStr, lcStr] = lastKey.split(',')
+           const lr = parseInt(lrStr, 10), lc = parseInt(lcStr, 10)
+           const dist = Math.abs(lr - row) + Math.abs(lc - col)
+           if (dist === 1) {
+              isDrawingInto = true
+           }
+        }
+
+        if (isDrawingInto) {
+          newGrid[row][col] = 'overpass'
+          const dirs = [[-1,0], [1,0], [0,-1], [0,1]]
+          const validNeighbors: string[] = []
+          for (const [dr, dc] of dirs) {
+            const nr = row + dr, nc = col + dc
+            if (nr >= 0 && nr < state.puzzle.gridSize && nc >= 0 && nc < state.puzzle.gridSize) {
+              const nKey = `${nr},${nc}`
+              if ((newGrid[nr][nc] === 'track' || newGrid[nr][nc] === 'overpass' || (nr === state.puzzle.start.row && nc === state.puzzle.start.col) || (nr === state.puzzle.end.row && nc === state.puzzle.end.col)) && !newConnections[key]?.includes(nKey)) {
+                const isNStart = nr === state.puzzle.start.row && nc === state.puzzle.start.col
+                const isNEnd = nr === state.puzzle.end.row && nc === state.puzzle.end.col
+                const maxConns = (isNStart || isNEnd) ? 1 : (newGrid[nr][nc] === 'overpass' ? 4 : 2)
+                if ((newConnections[nKey]?.length || 0) < maxConns) {
+                  validNeighbors.push(nKey)
+                }
+              }
+            }
+          }
+          validNeighbors.sort((a, b) => newHistory.indexOf(b) - newHistory.indexOf(a))
+          const toConnect = validNeighbors.slice(0, 4 - (newConnections[key]?.length || 0))
+          for (const nKey of toConnect) {
+            newConnections[key].push(nKey)
+            newConnections[nKey] = [...(newConnections[nKey] || []), key]
+          }
+          // Actualizamos el historial
+          const hIdx = newHistory.indexOf(key)
+          if (hIdx >= 0) newHistory.splice(hIdx, 1)
+          newHistory.push(key)
+
+        } else {
+          // Fallthrough to blocked
+          newGrid[row][col] = 'blocked'
+          const conns = newConnections[key] || []
+          for (const nKey of conns) {
+            if (newConnections[nKey]) {
+              newConnections[nKey] = newConnections[nKey].filter(k => k !== key)
+            }
+          }
+          delete newConnections[key]
+          const hIdx = newHistory.indexOf(key)
+          if (hIdx >= 0) newHistory.splice(hIdx, 1)
+
+          // Auto-Heal neighbors
+          for (const nKey of conns) {
+            const [nrStr, ncStr] = nKey.split(',')
+            const nr = parseInt(nrStr, 10), nc = parseInt(ncStr, 10)
+            const isNStart = nr === state.puzzle.start.row && nc === state.puzzle.start.col
+            const isNEnd = nr === state.puzzle.end.row && nc === state.puzzle.end.col
+            const nMax = (isNStart || isNEnd) ? 1 : (newGrid[nr][nc] === 'overpass' ? 4 : 2)
+            
+            const needed = nMax - (newConnections[nKey]?.length || 0)
+            if (needed > 0) {
+              const dirs = [[-1,0], [1,0], [0,-1], [0,1]]
+              const healCands: string[] = []
+              for (const [dr, dc] of dirs) {
+                const nnr = nr + dr, nnc = nc + dc
+                if (nnr >= 0 && nnr < state.puzzle.gridSize && nnc >= 0 && nnc < state.puzzle.gridSize) {
+                  const nnKey = `${nnr},${nnc}`
+                  if (nnKey !== key && !newConnections[nKey].includes(nnKey)) {
+                    if (newGrid[nnr][nnc] === 'track' || newGrid[nnr][nnc] === 'overpass' || (nnr === state.puzzle.start.row && nnc === state.puzzle.start.col) || (nnr === state.puzzle.end.row && nnc === state.puzzle.end.col)) {
+                      const isNNStart = nnr === state.puzzle.start.row && nnc === state.puzzle.start.col
+                      const isNNEnd = nnr === state.puzzle.end.row && nnc === state.puzzle.end.col
+                      const nnMax = (isNNStart || isNNEnd) ? 1 : (newGrid[nnr][nnc] === 'overpass' ? 4 : 2)
+                      if ((newConnections[nnKey]?.length || 0) < nnMax) {
+                        healCands.push(nnKey)
+                      }
+                    }
+                  }
+                }
+              }
+              healCands.sort((a, b) => newHistory.indexOf(b) - newHistory.indexOf(a))
+              const toHeal = healCands.slice(0, needed)
+              for (const hKey of toHeal) {
+                newConnections[nKey].push(hKey)
+                newConnections[hKey] = [...(newConnections[hKey] || []), nKey]
+              }
+            }
+          }
+        }
+
+      } else if (state.grid[row][col] === 'overpass') {
+        newGrid[row][col] = 'blocked'
+        const conns = newConnections[key] || []
+        for (const nKey of conns) {
+          if (newConnections[nKey]) {
+            newConnections[nKey] = newConnections[nKey].filter(k => k !== key)
+          }
+        }
+        delete newConnections[key]
+        const hIdx = newHistory.indexOf(key)
+        if (hIdx >= 0) newHistory.splice(hIdx, 1)
+
+        // Auto-Heal neighbors
+        for (const nKey of conns) {
+          const [nrStr, ncStr] = nKey.split(',')
+          const nr = parseInt(nrStr, 10), nc = parseInt(ncStr, 10)
+          const isNStart = nr === state.puzzle.start.row && nc === state.puzzle.start.col
+          const isNEnd = nr === state.puzzle.end.row && nc === state.puzzle.end.col
+          const nMax = (isNStart || isNEnd) ? 1 : (newGrid[nr][nc] === 'overpass' ? 4 : 2)
+          
+          const needed = nMax - (newConnections[nKey]?.length || 0)
+          if (needed > 0) {
+            const dirs = [[-1,0], [1,0], [0,-1], [0,1]]
+            const healCands: string[] = []
+            for (const [dr, dc] of dirs) {
+              const nnr = nr + dr, nnc = nc + dc
+              if (nnr >= 0 && nnr < state.puzzle.gridSize && nnc >= 0 && nnc < state.puzzle.gridSize) {
+                const nnKey = `${nnr},${nnc}`
+                if (nnKey !== key && !newConnections[nKey].includes(nnKey)) {
+                  if (newGrid[nnr][nnc] === 'track' || newGrid[nnr][nnc] === 'overpass' || (nnr === state.puzzle.start.row && nnc === state.puzzle.start.col) || (nnr === state.puzzle.end.row && nnc === state.puzzle.end.col)) {
+                    const isNNStart = nnr === state.puzzle.start.row && nnc === state.puzzle.start.col
+                    const isNNEnd = nnr === state.puzzle.end.row && nnc === state.puzzle.end.col
+                    const nnMax = (isNNStart || isNNEnd) ? 1 : (newGrid[nnr][nnc] === 'overpass' ? 4 : 2)
+                    if ((newConnections[nnKey]?.length || 0) < nnMax) {
+                      healCands.push(nnKey)
+                    }
+                  }
+                }
+              }
+            }
+            healCands.sort((a, b) => newHistory.indexOf(b) - newHistory.indexOf(a))
+            const toHeal = healCands.slice(0, needed)
+            for (const hKey of toHeal) {
+              newConnections[nKey].push(hKey)
+              newConnections[hKey] = [...(newConnections[hKey] || []), nKey]
+            }
+          }
+        }
+      } else {
+        newGrid[row][col] = 'empty'
+      }
+
+      const validation = validatePuzzle(newGrid, state.puzzle, newConnections)
       const isVictory = validation.isValid
 
       return {
         ...state,
         grid: newGrid,
+        connections: newConnections,
+        history: newHistory,
         validation,
         isVictory,
         isRunning: !isVictory,
@@ -150,10 +332,39 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       }
 
       if (changed) {
-        const validation = validatePuzzle(newGrid, state.puzzle)
+        // Recalcular conexiones simplificadas para el hint (sin overpass por ahora, para no liar)
+        // Solo para que el validador y UI lo procesen si aplica.
+        // Lo ideal es reconstruir el camino del hint... pero para no complicar el código
+        // podemos simplemente reconstruir connections desde la solution.
+        const newConnections: Record<string, string[]> = {}
+        const newHistory: string[] = []
+        for (const pos of solution) {
+           const k = `${pos.row},${pos.col}`
+           if (newGrid[pos.row][pos.col] === 'track') {
+             newConnections[k] = []
+             newHistory.push(k)
+           }
+        }
+        for (let i = 0; i < solution.length - 1; i++) {
+           const k1 = `${solution[i].row},${solution[i].col}`
+           const k2 = `${solution[i+1].row},${solution[i+1].col}`
+           if (newGrid[solution[i].row][solution[i].col] === 'track' && newGrid[solution[i+1].row][solution[i+1].col] === 'track') {
+             if (!newConnections[k1].includes(k2)) newConnections[k1].push(k2)
+             if (!newConnections[k2].includes(k1)) newConnections[k2].push(k1)
+           }
+        }
+        // añadir start y end vacios si no están
+        const sKey = `${state.puzzle.start.row},${state.puzzle.start.col}`
+        const eKey = `${state.puzzle.end.row},${state.puzzle.end.col}`
+        if (!newConnections[sKey]) newConnections[sKey] = []
+        if (!newConnections[eKey]) newConnections[eKey] = []
+
+        const validation = validatePuzzle(newGrid, state.puzzle, newConnections)
         return {
           ...state,
           grid: newGrid,
+          connections: newConnections,
+          history: newHistory,
           validation,
           isVictory: validation.isValid,
           isRunning: !validation.isValid,
@@ -170,7 +381,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         const saved = localStorage.getItem(`gameverse_traintracks_save_${action.difficulty}`)
         if (saved) {
           const parsed = JSON.parse(saved)
-          if (parsed && parsed.puzzle && parsed.grid) {
+          if (parsed && parsed.puzzle && parsed.grid && parsed.connections && parsed.history) {
             return parsed as GameState
           }
         }
@@ -184,11 +395,18 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case 'RESET_PUZZLE': {
       const grid = createInitialGrid(state.puzzle.gridSize, state.puzzle.start, state.puzzle.end)
-      const validation = validatePuzzle(grid, state.puzzle)
+      const startKey = `${state.puzzle.start.row},${state.puzzle.start.col}`
+      const endKey = `${state.puzzle.end.row},${state.puzzle.end.col}`
+      const connections: Record<string, string[]> = { [startKey]: [], [endKey]: [] }
+      const history = [startKey, endKey]
+      
+      const validation = validatePuzzle(grid, state.puzzle, connections)
 
       return {
         ...state,
         grid,
+        connections,
+        history,
         validation,
         isVictory: false,
         time: 0,
@@ -216,7 +434,7 @@ export function useTrainTracks(initialDifficulty: Difficulty = 'easy') {
       const saved = localStorage.getItem(`gameverse_traintracks_save_${initialDifficulty}`)
       if (saved) {
         const parsed = JSON.parse(saved)
-        if (parsed && parsed.puzzle && parsed.grid) {
+        if (parsed && parsed.puzzle && parsed.grid && parsed.connections && parsed.history) {
           return parsed as GameState
         }
       }

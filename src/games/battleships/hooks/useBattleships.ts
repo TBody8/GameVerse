@@ -164,7 +164,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         const saved = localStorage.getItem(`gameverse_battleships_save_${action.difficulty}`)
         if (saved) {
           const parsed = JSON.parse(saved)
-          if (parsed && parsed.puzzle && parsed.grid) {
+          if (parsed && parsed.puzzle && parsed.grid && parsed.validation && parsed.validation.invalidCells) {
             return parsed as GameState
           }
         }
@@ -213,7 +213,7 @@ export function useBattleships(initialDifficulty: Difficulty = 'easy') {
       const saved = localStorage.getItem(`gameverse_battleships_save_${initialDifficulty}`)
       if (saved) {
         const parsed = JSON.parse(saved)
-        if (parsed && parsed.puzzle && parsed.grid) {
+        if (parsed && parsed.puzzle && parsed.grid && parsed.validation && parsed.validation.invalidCells) {
           return parsed as GameState
         }
       }

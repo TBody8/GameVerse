@@ -13,15 +13,15 @@ export interface ValidationResult {
   }
 }
 
-export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationResult {
+export function validatePuzzle(grid: CellState[][], puzzle: Puzzle, connections: Record<string, string[]>): ValidationResult {
   const size = puzzle.gridSize
   const rowCounts = puzzle.rowCounts
   const colCounts = puzzle.colCounts
 
-  // 1. Validar conteos individuales y globales
-  const actualRowCounts = grid.map(row => row.filter(cell => cell === 'track').length)
+  // 1. Validar conteos individuales y globales (track y overpass cuentan)
+  const actualRowCounts = grid.map(row => row.filter(cell => cell === 'track' || cell === 'overpass').length)
   const actualColCounts = Array.from({ length: size }, (_, colIndex) =>
-    grid.filter(row => row[colIndex] === 'track').length
+    grid.filter(row => row[colIndex] === 'track' || row[colIndex] === 'overpass').length
   )
 
   const rowStatus = actualRowCounts.map((count, index) => {
@@ -47,7 +47,7 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
   const trackCells: Position[] = []
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
-      if (grid[r][c] === 'track') {
+      if (grid[r][c] === 'track' || grid[r][c] === 'overpass') {
         trackCells.push({ row: r, col: c })
       }
     }
@@ -69,27 +69,23 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
     }
   }
 
-  // Construir mapa de vecinos activos
-  const getNeighborsCount = (r: number, c: number): number => {
-    let count = 0
-    if (r > 0 && grid[r - 1][c] === 'track') count++
-    if (r < size - 1 && grid[r + 1][c] === 'track') count++
-    if (c > 0 && grid[r][c - 1] === 'track') count++
-    if (c < size - 1 && grid[r][c + 1] === 'track') count++
-    return count
-  }
-
+  // Construir mapa de vecinos activos usando 'connections'
   for (const cell of trackCells) {
     const isStart = cell.row === puzzle.start.row && cell.col === puzzle.start.col
     const isEnd = cell.row === puzzle.end.row && cell.col === puzzle.end.col
-
-    const count = getNeighborsCount(cell.row, cell.col)
+    const key = `${cell.row},${cell.col}`
+    const count = connections[key]?.length || 0
 
     if (isStart || isEnd) {
       if (count > 1) noBranches = false
     } else {
-      if (count > 2) noBranches = false
-      if (count < 2) noDeadEnds = false
+      if (grid[cell.row][cell.col] === 'overpass') {
+        if (count > 4) noBranches = false
+        if (count < 4) noDeadEnds = false // Overpass necesita 4 para no ser dead end, pero el juego real no permite overpasses
+      } else {
+        if (count > 2) noBranches = false
+        if (count < 2) noDeadEnds = false
+      }
     }
   }
 
@@ -100,16 +96,18 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
   const visited = new Set<string>()
   const startKey = `${puzzle.start.row},${puzzle.start.col}`
 
-  let current = grid[puzzle.start.row][puzzle.start.col] === 'track' ? puzzle.start : null
-  let prev: Position | null = null
+  let currentKey = startKey
+  let prevKey: string | null = null
   let pathLength = 0
 
-  if (current) {
+  if (connections[startKey]) {
     visited.add(startKey)
     pathLength = 1
 
-    while (current) {
-      const { row: r, col: c } = current
+    while (currentKey) {
+      const [rStr, cStr] = currentKey.split(',')
+      const r = parseInt(rStr, 10)
+      const c = parseInt(cStr, 10)
       const isEnd = r === puzzle.end.row && c === puzzle.end.col
 
       if (isEnd) {
@@ -117,35 +115,19 @@ export function validatePuzzle(grid: CellState[][], puzzle: Puzzle): ValidationR
         break
       }
 
-      // Buscar siguiente vecino que sea vía y no sea el anterior
-      const nextCandidates: Position[] = []
-      const directions = [
-        { r: -1, c: 0 },
-        { r: 1, c: 0 },
-        { r: 0, c: -1 },
-        { r: 0, c: 1 },
-      ]
-
-      for (const dir of directions) {
-        const nr = r + dir.r
-        const nc = c + dir.c
-        if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
-          if (grid[nr][nc] === 'track' && (!prev || prev.row !== nr || prev.col !== nc)) {
-            nextCandidates.push({ row: nr, col: nc })
-          }
-        }
-      }
+      // Buscar siguiente vecino según el array de conexiones
+      const neighbors = connections[currentKey] || []
+      const nextCandidates = neighbors.filter(nKey => nKey !== prevKey)
 
       if (nextCandidates.length === 1) {
-        prev = current
-        current = nextCandidates[0] as Position & { dir: "N" | "S" | "E" | "W" }
-        const key = `${current.row},${current.col}`
-        if (visited.has(key)) {
+        prevKey = currentKey
+        currentKey = nextCandidates[0]
+        if (visited.has(currentKey)) {
           // Detectado bucle cerrado
           noLoops = false
           break
         }
-        visited.add(key)
+        visited.add(currentKey)
         pathLength++
       } else {
         // bifurcación o vía muerta

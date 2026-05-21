@@ -11,10 +11,11 @@ interface CellProps {
   grid: CellState[][]
   isFixed: boolean
   isHinted?: boolean
+  isInvalid?: boolean
   onClick: () => void
 }
 
-export default function Cell({ row, col, state, grid, isFixed, isHinted, onClick }: CellProps) {
+export default function Cell({ row, col, state, grid, isFixed, isHinted, isInvalid, onClick }: CellProps) {
   const cellRef = useRef<SVGGElement>(null)
 
   useEffect(() => {
@@ -95,7 +96,7 @@ export default function Cell({ row, col, state, grid, isFixed, isHinted, onClick
 
       {state === 'ship' && (
         <g transform={`translate(${col * 100}, ${row * 100})`}>
-          <ShipPiece row={row} col={col} grid={grid} />
+          <ShipPiece row={row} col={col} grid={grid} isInvalid={isInvalid} />
         </g>
       )}
     </g>

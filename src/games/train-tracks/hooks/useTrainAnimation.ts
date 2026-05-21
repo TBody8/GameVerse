@@ -49,8 +49,8 @@ export function useTrainAnimation({
           x: targetX,
           y: targetY,
           rotation,
-          duration: 0.18, // Movimiento ultra rápido de energía cyber
-          ease: 'sine.inInOut',
+          duration: 0.15, // Movimiento ultra rápido y lineal
+          ease: 'none',
         })
       }
     })

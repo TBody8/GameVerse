@@ -4,9 +4,10 @@ interface ShipPieceProps {
   row: number
   col: number
   grid: CellState[][]
+  isInvalid?: boolean
 }
 
-export default function ShipPiece({ row, col, grid }: ShipPieceProps) {
+export default function ShipPiece({ row, col, grid, isInvalid }: ShipPieceProps) {
   const size = grid.length
   
   const hasTop = row > 0 && grid[row - 1][col] === 'ship'
@@ -14,10 +15,10 @@ export default function ShipPiece({ row, col, grid }: ShipPieceProps) {
   const hasLeft = col > 0 && grid[row][col - 1] === 'ship'
   const hasRight = col < size - 1 && grid[row][col + 1] === 'ship'
 
-  const hullFill = "var(--color-accent-subtle)"
-  const hullStroke = "var(--color-accent)"
+  const hullFill = isInvalid ? "rgba(239, 68, 68, 0.2)" : "var(--color-accent-subtle)"
+  const hullStroke = isInvalid ? "var(--color-error)" : "var(--color-accent)"
   const hullStrokeW = 3
-  const filter = "drop-shadow(0 0 4px var(--color-accent))"
+  const filter = isInvalid ? "drop-shadow(0 0 6px rgba(239, 68, 68, 0.6))" : "drop-shadow(0 0 4px var(--color-accent))"
   
   // Ancho del barco
   const w = 60

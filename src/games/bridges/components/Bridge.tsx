@@ -33,6 +33,8 @@ export default function Bridge({ bridge, islands, isInvalid, prevCount = 0, erro
   const isVert = bridge.isVertical
   const offset = 4
 
+  const prevErrorRef = useRef(isInvalid || !!errorHintStr)
+
   useLayoutEffect(() => {
     // Animación cuando el puente pasa de 0 a 1
     if (prevCount === 0 && bridge.count >= 1 && lineRef.current) {
@@ -74,11 +76,16 @@ export default function Bridge({ bridge, islands, isInvalid, prevCount = 0, erro
   }, [bridge.count, prevCount, x1, y1, x2, y2])
 
   useEffect(() => {
-    if ((isInvalid || errorHintStr) && (lineRef.current || gRef.current)) {
+    const isError = isInvalid || !!errorHintStr
+    const wasError = prevErrorRef.current
+    prevErrorRef.current = isError
+
+    if (isError && (lineRef.current || gRef.current)) {
       gsap.to(gRef.current || lineRef.current, {
         opacity: 0.3,
         stroke: 'var(--color-error)',
         duration: 0.25,
+        delay: 0.1, // Pequeño delay para no interferir con la creación si ocurre simultáneamente
         yoyo: true,
         repeat: 5,
         ease: 'power2.inOut',
@@ -86,8 +93,13 @@ export default function Bridge({ bridge, islands, isInvalid, prevCount = 0, erro
           gsap.to(gRef.current || lineRef.current, { stroke: strokeColor, opacity: 1, duration: 0.2 })
         }
       })
+    } else if (!isError && wasError && (lineRef.current || gRef.current)) {
+      // SOLO limpiamos si veníamos de un estado de error a un estado normal.
+      // Así evitamos matar la animación de creación inicial de useLayoutEffect.
+      gsap.killTweensOf(gRef.current || lineRef.current)
+      gsap.set(gRef.current || lineRef.current, { clearProps: 'stroke,opacity' })
     }
-  }, [isInvalid, errorHintStr])
+  }, [isInvalid, errorHintStr, strokeColor])
 
   if (bridge.count === 1) {
     return (

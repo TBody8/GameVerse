@@ -8,6 +8,7 @@ export type TrackPieceType =
   | 'curve-nw'
   | 'curve-se'
   | 'curve-sw'
+  | 'overpass'
   | 'none'
 
 export function getTrackPiece(
@@ -15,28 +16,22 @@ export function getTrackPiece(
   col: number,
   grid: CellState[][],
   start: Position & { dir: 'N' | 'S' | 'E' | 'W' },
-  end: Position & { dir: 'N' | 'S' | 'E' | 'W' }
+  end: Position & { dir: 'N' | 'S' | 'E' | 'W' },
+  connections: string[] = []
 ): TrackPieceType {
-  if (grid[row][col] !== 'track') return 'none'
+  const cellState = grid[row][col]
+  if (cellState !== 'track' && cellState !== 'overpass') return 'none'
+  if (cellState === 'overpass') return 'overpass'
 
-  // Encontrar celdas vecinas que también sean vías, o si son la entrada/salida
+  // Usamos el array de conexiones explícitas para saber hacia dónde dibujar la vía
   const neighbors = {
-    N: false,
-    S: false,
-    E: false,
-    W: false,
+    N: connections.includes(`${row - 1},${col}`),
+    S: connections.includes(`${row + 1},${col}`),
+    E: connections.includes(`${row},${col + 1}`),
+    W: connections.includes(`${row},${col - 1}`)
   }
 
-  // 1. Vecino Norte
-  if (row > 0 && grid[row - 1][col] === 'track') neighbors.N = true
-  // 2. Vecino Sur
-  if (row < grid.length - 1 && grid[row + 1][col] === 'track') neighbors.S = true
-  // 3. Vecino Este
-  if (col < grid[0].length - 1 && grid[row][col + 1] === 'track') neighbors.E = true
-  // 4. Vecino Oeste
-  if (col > 0 && grid[row][col - 1] === 'track') neighbors.W = true
-
-  // Estaciones A (start) y B (end)
+  // Estaciones A (start) y B (end) tienen una conexión "ficticia" hacia afuera de la cuadrícula
   const isStart = row === start.row && col === start.col
   const isEnd = row === end.row && col === end.col
 
@@ -70,7 +65,12 @@ export function getTrackPiece(
     return 'straight-h'
   }
 
-  // Si tiene exactamente 2 o más conexiones, calculamos la curva o línea recta
+  // Si tiene 3 o más conexiones (que por el nuevo sistema inteligente no debería pasar en 'track', pero por si acaso)
+  if (activeDirs.length >= 3) {
+    return 'overpass'
+  }
+
+  // Si tiene exactamente 2 conexiones, calculamos la curva o línea recta
   const hasN = neighbors.N
   const hasS = neighbors.S
   const hasE = neighbors.E

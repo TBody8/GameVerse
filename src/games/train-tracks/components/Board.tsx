@@ -9,10 +9,11 @@ interface BoardProps {
   puzzle: Puzzle
   validation: ValidationResult
   hintedCell: Position | null
+  connections: Record<string, string[]>
   onCellClick: (row: number, col: number) => void
 }
 
-export default function Board({ grid, puzzle, validation, hintedCell, onCellClick }: BoardProps) {
+export default function Board({ grid, puzzle, validation, hintedCell, connections, onCellClick }: BoardProps) {
   const size = puzzle.gridSize
 
   // Tamaño total de la cuadrícula SVG
@@ -69,6 +70,7 @@ export default function Board({ grid, puzzle, validation, hintedCell, onCellClic
                 start={puzzle.start}
                 end={puzzle.end}
                 isHinted={hintedCell !== null && hintedCell.row === rowIndex && hintedCell.col === colIndex}
+                connections={connections ? (connections[`${rowIndex},${colIndex}`] || []) : []}
                 onClick={() => onCellClick(rowIndex, colIndex)}
               />
             ))}

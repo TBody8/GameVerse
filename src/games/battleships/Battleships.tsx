@@ -9,6 +9,59 @@ import { usePageTransition } from '@/components/layout/PageTransitionWrapper'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 
+// Subcomponente para renderizar la flota
+function FleetStatus({ puzzle, fleetStatus, hasDiagonalTouch, hasShapeError }: any) {
+  const fleetSizes = Object.keys(puzzle.fleet).map(Number).sort((a, b) => b - a)
+
+  return (
+    <div style={{
+      width: '100%',
+      maxWidth: '500px',
+      backgroundColor: 'var(--color-surface-2)',
+      borderRadius: 'var(--radius-md)',
+      padding: 'var(--space-4)',
+      marginTop: 'var(--space-2)',
+      border: '1px solid var(--color-border)',
+      boxShadow: 'var(--shadow-neon-glow)'
+    }}>
+      <h3 style={{ fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', color: 'var(--color-text-secondary)', textAlign: 'center' }}>
+        {t`ESTADO DE LA FLOTA`}
+      </h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+        {fleetSizes.map(size => {
+          const req = puzzle.fleet[size]
+          const found = fleetStatus ? (fleetStatus[size]?.found || 0) : 0
+          const isComplete = found === req
+          const isExceeded = found > req
+
+          return (
+            <div key={size} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', gap: '2px' }}>
+                {Array.from({ length: size }).map((_, i) => (
+                  <div key={i} style={{
+                    width: '16px', height: '16px',
+                    backgroundColor: isExceeded ? 'rgba(239,68,68,0.2)' : isComplete ? 'var(--color-accent-subtle)' : 'var(--color-surface)',
+                    border: `1px solid ${isExceeded ? 'var(--color-error)' : isComplete ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                    borderRadius: '2px',
+                    opacity: isComplete && !isExceeded ? 0.5 : 1
+                  }} />
+                ))}
+              </div>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'var(--text-sm)',
+                color: isExceeded ? 'var(--color-error)' : isComplete ? 'var(--color-accent)' : 'var(--color-text-primary)'
+              }}>
+                {found} / {req}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function Battleships() {
   useLingui() // Suscripción activa al cambio de idioma
   const { state, toggleCell, setDifficulty, nextPuzzle, resetPuzzle, applyHint, saveProgress, clearProgress } = useBattleships('easy')
@@ -134,6 +187,14 @@ export default function Battleships() {
           onCellClick={toggleCell}
         />
       </div>
+
+      {/* Panel de Estado de la Flota */}
+      <FleetStatus 
+        puzzle={state.puzzle} 
+        fleetStatus={state.validation.fleetStatus}
+        hasDiagonalTouch={false}
+        hasShapeError={false}
+      />
 
       <p
         style={{

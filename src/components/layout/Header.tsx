@@ -46,7 +46,7 @@ export default function Header() {
           }}
         >
           <span className="breathing-dot" style={{ color: 'var(--color-accent-hover)', filter: 'drop-shadow(0 0 4px var(--color-accent))' }}>●</span>
-          <span>GameVerse</span>
+          <span className="logo-text">GameVerse</span>
         </a>
 
         <LanguageSelector />

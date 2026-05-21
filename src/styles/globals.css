@@ -405,6 +405,16 @@ ul, ol {
   }
 }
 
+.logo-text {
+  font-size: var(--text-lg);
+}
+
+@media (min-width: 768px) {
+  .logo-text {
+    font-size: var(--text-xl);
+  }
+}
+
 /* --- LED de Encendido Respirando --- */
 @keyframes led-breath {
   0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 2px var(--color-accent-hover)); }

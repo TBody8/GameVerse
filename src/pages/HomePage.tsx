@@ -8,6 +8,7 @@ import { playTick, playBootSound, playBlock } from '@/utils/audio'
 import ConsoleHeader from '@/components/ui/ConsoleHeader'
 import ScrambleText from '@/components/ui/ScrambleText'
 import { usePageTransition } from '@/components/layout/PageTransitionWrapper'
+import { useStats } from '@/hooks/useStats'
 
 import { t } from '@lingui/macro'
 
@@ -17,6 +18,13 @@ export default function HomePage() {
   const cardsRef = useRef<HTMLDivElement>(null)
   const { navigateWithTransition } = usePageTransition()
   const { i18n } = useLingui()
+  const { stats } = useStats()
+
+  const formatTime = (secs: number) => {
+    const m = Math.floor(secs / 60)
+    const s = secs % 60
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+  }
 
   useEffect(() => {
     // Intentar reproducir sonido de inicialización al cargar
@@ -88,6 +96,13 @@ export default function HomePage() {
           }
           const RegularIcon = IconMap[game.iconName] || Globe
           const Icon = game.available ? RegularIcon : LockKey
+
+          const gameStats = stats.games[game.id]
+          let bestTimeStr = ''
+          if (gameStats?.bestTime && Object.keys(gameStats.bestTime).length > 0) {
+            const minTime = Math.min(...Object.values(gameStats.bestTime) as number[])
+            bestTimeStr = formatTime(minTime)
+          }
 
           return (
             <Link
@@ -244,6 +259,17 @@ export default function HomePage() {
                 }}
               >
                 <span>{game.available ? `● ${t`CARGAR JUEGO`}` : `! ${t`ESTADO: EN DESARROLLO`}`}</span>
+                {game.available && gameStats?.wins > 0 && (
+                  <span style={{ color: 'var(--color-text-secondary)', textShadow: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>{t`WINS`}: {gameStats.wins}</span>
+                    {bestTimeStr && (
+                      <>
+                        <span style={{ opacity: 0.5 }}>|</span>
+                        <span>{t`BEST`}: {bestTimeStr}</span>
+                      </>
+                    )}
+                  </span>
+                )}
               </div>
             </Link>
           )

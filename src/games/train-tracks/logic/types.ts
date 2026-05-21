@@ -1,6 +1,6 @@
 export { type Difficulty } from '@/types/game'
 
-export type CellState = 'empty' | 'track' | 'blocked'
+export type CellState = 'empty' | 'track' | 'overpass' | 'blocked'
 
 export interface Position {
   row: number
