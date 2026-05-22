@@ -23,7 +23,7 @@ msgstr "السفن الحربية"
 
 #: src/pages/HomePage.tsx:268
 msgid "BEST"
-msgstr ""
+msgstr "BEST"
 
 #: src/components/ui/GameCard.tsx:162
 #~ msgid "BLOQUEADO"
@@ -257,4 +257,4 @@ msgstr ""
 
 #: src/pages/HomePage.tsx:264
 msgid "WINS"
-msgstr ""
+msgstr "WINS"
