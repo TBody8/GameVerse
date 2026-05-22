@@ -3,6 +3,9 @@ import type { LinguiConfig } from '@lingui/conf'
 const config: LinguiConfig = {
   locales: ['es', 'en', 'fr', 'pt', 'zh', 'hi', 'ar'],
   sourceLocale: 'es',
+  fallbackLocales: {
+    default: 'es'
+  },
   catalogs: [
     {
       path: '<rootDir>/src/i18n/locales/{locale}/messages',

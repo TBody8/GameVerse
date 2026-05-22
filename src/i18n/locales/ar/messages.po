@@ -13,32 +13,35 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/HomePage.tsx:226
+#: src/pages/HomePage.tsx:241
 msgid "[DATOS ENCRIPTADOS] CONTENIDO DEL CARTUCHO RESTRINGIDO. SE REQUIERE AUTORIZACIÓN DE NIVEL 4."
 msgstr ""
 
-#: src/games/registry.ts:28
+#: src/games/registry.ts:55
 msgid "Battleships"
 msgstr "السفن الحربية"
 
-#: src/components/ui/GameCard.tsx:162
-msgid "BLOQUEADO"
-msgstr "مغلق"
-
-#: src/games/registry.ts:37
-msgid "Bridges"
-msgstr "الجسور"
-
-#: src/games/registry.ts:73
-msgid "Buscaminas"
+#: src/pages/HomePage.tsx:268
+msgid "BEST"
 msgstr ""
 
 #: src/components/ui/GameCard.tsx:162
-#: src/pages/HomePage.tsx:246
+#~ msgid "BLOQUEADO"
+#~ msgstr "مغلق"
+
+#: src/games/registry.ts:64
+msgid "Bridges"
+msgstr "الجسور"
+
+#: src/games/registry.ts:100
+msgid "Buscaminas"
+msgstr ""
+
+#: src/pages/HomePage.tsx:261
 msgid "CARGAR JUEGO"
 msgstr "تحميل اللعبة"
 
-#: src/games/registry.ts:65
+#: src/games/registry.ts:92
 msgid "Completa la cuadrícula con números sin repetirlos en filas, columnas o cajas."
 msgstr ""
 
@@ -46,29 +49,29 @@ msgstr ""
 msgid "Conecta todas las islas con puentes para formar una única red continua."
 msgstr ""
 
-#: src/games/registry.ts:38
+#: src/games/registry.ts:65
 msgid "Conecta todas las islas con puentes sin que se crucen para formar una red."
 msgstr "اربط جميع الجزر بالجسور دون تجاوزها لتشكيل شبكة."
 
-#: src/games/battleships/Battleships.tsx:35
+#: src/games/battleships/Battleships.tsx:88
 #: src/games/bridges/Bridges.tsx:35
 #: src/games/train-tracks/TrainTracks.tsx:36
 msgid "Controles"
 msgstr ""
 
-#: src/games/registry.ts:47
+#: src/games/registry.ts:74
 msgid "Crucigrama matemático: rellena con números sin repetir para sumar las pistas."
 msgstr "لغز الكلمات المتقاطعة الرياضي: املأ الأرقام لتتطابق مع القرائن."
 
-#: src/games/battleships/Battleships.tsx:31
+#: src/games/battleships/Battleships.tsx:84
 msgid "Debes encontrar todos los barcos requeridos por la dificultad."
 msgstr ""
 
-#: src/games/registry.ts:74
+#: src/games/registry.ts:101
 msgid "Despeja el campo de minas utilizando las pistas numéricas de peligro."
 msgstr ""
 
-#: src/games/registry.ts:56
+#: src/games/registry.ts:83
 msgid "Dibuja un único lazo cerrado conectando los puntos según los números dados."
 msgstr "ارسم حلقة مغلقة واحدة تربط النقاط وفقًا للأرقام المحددة."
 
@@ -76,13 +79,13 @@ msgstr "ارسم حلقة مغلقة واحدة تربط النقاط وفقًا
 msgid "Dibuja una única vía de tren continua que conecte la estación de entrada (A) con la de salida (B)."
 msgstr ""
 
-#: src/games/registry.ts:20
+#: src/games/registry.ts:47
 msgid "Dibuja una vía de tren continua de A a B respetando los límites de cada fila y columna."
 msgstr "ارسم مسار قطار مستمر من A إلى B."
 
-#: src/games/battleships/Battleships.tsx:103
+#: src/games/battleships/Battleships.tsx:156
 #: src/games/bridges/Bridges.tsx:79
-#: src/games/train-tracks/TrainTracks.tsx:104
+#: src/games/train-tracks/TrainTracks.tsx:106
 msgid "Difícil"
 msgstr ""
 
@@ -94,35 +97,39 @@ msgstr ""
 msgid "El número en la isla indica la cantidad EXACTA de puentes conectados a ella."
 msgstr ""
 
-#: src/games/registry.ts:29
+#: src/games/registry.ts:56
 msgid "Encuentra la flota de barcos escondida en el océano usando pistas numéricas."
 msgstr "ابحث عن الأسطول المخفي في المحيط."
 
-#: src/games/battleships/Battleships.tsx:23
+#: src/games/battleships/Battleships.tsx:76
 msgid "Encuentra la flota enemiga escondida en el océano."
 msgstr ""
 
-#: src/pages/HomePage.tsx:246
+#: src/games/battleships/Battleships.tsx:28
+msgid "ESTADO DE LA FLOTA"
+msgstr ""
+
+#: src/pages/HomePage.tsx:261
 msgid "ESTADO: EN DESARROLLO"
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:103
+#: src/games/battleships/Battleships.tsx:156
 #: src/games/bridges/Bridges.tsx:79
-#: src/games/train-tracks/TrainTracks.tsx:104
+#: src/games/train-tracks/TrainTracks.tsx:106
 msgid "Experto"
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:101
+#: src/games/battleships/Battleships.tsx:154
 #: src/games/bridges/Bridges.tsx:77
-#: src/games/train-tracks/TrainTracks.tsx:102
+#: src/games/train-tracks/TrainTracks.tsx:104
 msgid "Fácil"
 msgstr ""
 
-#: src/pages/HomePage.tsx:64
+#: src/pages/HomePage.tsx:72
 msgid "Introduce un cartucho digital para cargar el puzzle. Todo el progreso se autoguarda en el chasis de la consola."
 msgstr "أدخل خرطوشة رقمية لتحميل اللغز. يتم حفظ كل التقدم."
 
-#: src/games/registry.ts:46
+#: src/games/registry.ts:73
 msgid "Kakuro"
 msgstr "كاكورو"
 
@@ -130,11 +137,11 @@ msgstr "كاكورو"
 msgid "La vía no puede cruzarse a sí misma ni ramificarse."
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:30
+#: src/games/battleships/Battleships.tsx:83
 msgid "Los barcos NUNCA pueden tocarse entre sí, ni siquiera en diagonal."
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:29
+#: src/games/battleships/Battleships.tsx:82
 msgid "Los números indican cuántos fragmentos de barco hay EXACTAMENTE en esa fila o columna."
 msgstr ""
 
@@ -146,9 +153,9 @@ msgstr ""
 msgid "Los puentes solo pueden ser rectos (horizontales o verticales)."
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:102
+#: src/games/battleships/Battleships.tsx:155
 #: src/games/bridges/Bridges.tsx:78
-#: src/games/train-tracks/TrainTracks.tsx:103
+#: src/games/train-tracks/TrainTracks.tsx:105
 msgid "Medio"
 msgstr ""
 
@@ -156,11 +163,11 @@ msgstr ""
 msgid "No pueden quedar tramos sueltos o vías muertas."
 msgstr ""
 
-#: src/games/registry.ts:82
+#: src/games/registry.ts:109
 msgid "Nonogramas"
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:21
+#: src/games/battleships/Battleships.tsx:74
 #: src/games/bridges/Bridges.tsx:21
 #: src/games/train-tracks/TrainTracks.tsx:22
 msgid "Objetivo"
@@ -174,21 +181,21 @@ msgstr ""
 msgid "Repite la misma conexión para convertir el puente en DOBLE (rombo central)."
 msgstr ""
 
-#: src/games/bridges/Bridges.tsx:105
+#: src/games/bridges/Bridges.tsx:113
 msgid "Repite la misma conexión para puente doble."
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:27
+#: src/games/battleships/Battleships.tsx:80
 #: src/games/bridges/Bridges.tsx:25
 #: src/games/train-tracks/TrainTracks.tsx:28
 msgid "Restricciones"
 msgstr ""
 
-#: src/games/registry.ts:83
+#: src/games/registry.ts:110
 msgid "Revela la imagen oculta coloreando las celdas según los números del borde."
 msgstr ""
 
-#: src/games/bridges/Bridges.tsx:105
+#: src/games/bridges/Bridges.tsx:113
 msgid "Selecciona una isla y luego otra en línea recta para crear un puente."
 msgstr ""
 
@@ -196,15 +203,15 @@ msgstr ""
 msgid "SELECCIONAR CARTUCHO"
 msgstr "حدد الخرطوشة"
 
-#: src/games/registry.ts:55
+#: src/games/registry.ts:82
 msgid "Slitherlink"
 msgstr "سليثرلينك"
 
-#: src/games/registry.ts:64
+#: src/games/registry.ts:91
 msgid "Sudoku"
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:38
+#: src/games/battleships/Battleships.tsx:91
 msgid "Toca de nuevo para marcarla como BARCO (pieza encontrada)."
 msgstr ""
 
@@ -220,7 +227,7 @@ msgstr ""
 msgid "Toca una celda vacía para colocar un trozo de vía. (Se orientará automáticamente)."
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:37
+#: src/games/battleships/Battleships.tsx:90
 msgid "Toca una celda vacía para marcarla con AGUA (celda segura)."
 msgstr ""
 
@@ -228,7 +235,7 @@ msgstr ""
 msgid "Toca una isla para seleccionarla (se iluminará el borde)."
 msgstr ""
 
-#: src/games/battleships/Battleships.tsx:39
+#: src/games/battleships/Battleships.tsx:92
 msgid "Toca una tercera vez para dejarla vacía de nuevo."
 msgstr ""
 
@@ -240,10 +247,14 @@ msgstr ""
 msgid "Todas las islas deben quedar conectadas en un solo grupo."
 msgstr ""
 
-#: src/games/registry.ts:19
+#: src/games/registry.ts:46
 msgid "Train Tracks"
 msgstr "مسارات القطار"
 
 #: src/games/bridges/Bridges.tsx:40
 msgid "Una tercera vez borrará los puentes entre esas dos islas."
+msgstr ""
+
+#: src/pages/HomePage.tsx:264
+msgid "WINS"
 msgstr ""
