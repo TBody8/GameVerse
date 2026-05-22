@@ -10,7 +10,7 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 
 // Subcomponente para renderizar la flota
-function FleetStatus({ puzzle, fleetStatus, hasDiagonalTouch, hasShapeError }: any) {
+function FleetStatus({ puzzle, fleetStatus }: any) {
   const fleetSizes = Object.keys(puzzle.fleet).map(Number).sort((a, b) => b - a)
 
   return (
@@ -192,8 +192,6 @@ export default function Battleships() {
       <FleetStatus 
         puzzle={state.puzzle} 
         fleetStatus={state.validation.fleetStatus}
-        hasDiagonalTouch={false}
-        hasShapeError={false}
       />
 
       <p
