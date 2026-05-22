@@ -258,14 +258,14 @@ export default function HomePage() {
                   borderRadius: 'var(--radius-sm)'
                 }}
               >
-                <span>{game.available ? `● ${t`CARGAR JUEGO`}` : `! ${t`ESTADO: EN DESARROLLO`}`}</span>
+                <span>{game.available ? `● ${t({ id: 'CARGAR JUEGO', message: 'CARGAR JUEGO' })}` : `! ${t({ id: 'ESTADO: EN DESARROLLO', message: 'ESTADO: EN DESARROLLO' })}`}</span>
                 {game.available && gameStats?.wins > 0 && (
                   <span style={{ color: 'var(--color-text-secondary)', textShadow: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span>{t`WINS`}: {gameStats.wins}</span>
+                    <span>{t({ id: 'WINS', message: 'WINS' })}: {gameStats.wins}</span>
                     {bestTimeStr && (
                       <>
                         <span style={{ opacity: 0.5 }}>|</span>
-                        <span>{t`BEST`}: {bestTimeStr}</span>
+                        <span>{t({ id: 'BEST', message: 'BEST' })}: {bestTimeStr}</span>
                       </>
                     )}
                   </span>

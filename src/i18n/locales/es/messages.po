@@ -21,9 +21,14 @@ msgstr "[DATOS ENCRIPTADOS] CONTENIDO DEL CARTUCHO RESTRINGIDO. SE REQUIERE AUTO
 msgid "Battleships"
 msgstr "Battleships"
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:268
 msgid "BEST"
 msgstr "BEST"
+
+#: src/pages/HomePage.tsx:268
+#~ msgid "BEST"
+#~ msgstr "BEST"
 
 #: src/components/ui/GameCard.tsx:162
 #~ msgid "BLOQUEADO"
@@ -37,9 +42,14 @@ msgstr "Bridges"
 msgid "Buscaminas"
 msgstr "Buscaminas"
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:261
 msgid "CARGAR JUEGO"
 msgstr "CARGAR JUEGO"
+
+#: src/pages/HomePage.tsx:261
+#~ msgid "CARGAR JUEGO"
+#~ msgstr "CARGAR JUEGO"
 
 #: src/games/registry.ts:92
 msgid "Completa la cuadrícula con números sin repetirlos en filas, columnas o cajas."
@@ -109,9 +119,14 @@ msgstr "Encuentra la flota enemiga escondida en el océano."
 msgid "ESTADO DE LA FLOTA"
 msgstr "ESTADO DE LA FLOTA"
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:261
 msgid "ESTADO: EN DESARROLLO"
 msgstr "ESTADO: EN DESARROLLO"
+
+#: src/pages/HomePage.tsx:261
+#~ msgid "ESTADO: EN DESARROLLO"
+#~ msgstr "ESTADO: EN DESARROLLO"
 
 #: src/games/battleships/Battleships.tsx:156
 #: src/games/bridges/Bridges.tsx:79
@@ -247,14 +262,24 @@ msgstr "Toca una tercera vez para volver a dejarla vacía."
 msgid "Todas las islas deben quedar conectadas en un solo grupo."
 msgstr "Todas las islas deben quedar conectadas en un solo grupo."
 
+#. js-lingui-explicit-id
 #: src/games/registry.ts:46
 msgid "Train Tracks"
 msgstr "Train Tracks"
+
+#: src/games/registry.ts:46
+#~ msgid "Train Tracks"
+#~ msgstr "Train Tracks"
 
 #: src/games/bridges/Bridges.tsx:40
 msgid "Una tercera vez borrará los puentes entre esas dos islas."
 msgstr "Una tercera vez borrará los puentes entre esas dos islas."
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:264
 msgid "WINS"
 msgstr "WINS"
+
+#: src/pages/HomePage.tsx:264
+#~ msgid "WINS"
+#~ msgstr "WINS"

@@ -21,9 +21,14 @@ msgstr ""
 msgid "Battleships"
 msgstr "Battleships"
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:268
 msgid "BEST"
 msgstr "BEST"
+
+#: src/pages/HomePage.tsx:268
+#~ msgid "BEST"
+#~ msgstr "BEST"
 
 #: src/components/ui/GameCard.tsx:162
 #~ msgid "BLOQUEADO"
@@ -37,9 +42,14 @@ msgstr "Bridges"
 msgid "Buscaminas"
 msgstr ""
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:261
 msgid "CARGAR JUEGO"
-msgstr "खेल लोड करें"
+msgstr "CARGAR JUEGO"
+
+#: src/pages/HomePage.tsx:261
+#~ msgid "CARGAR JUEGO"
+#~ msgstr "खेल लोड करें"
 
 #: src/games/registry.ts:92
 msgid "Completa la cuadrícula con números sin repetirlos en filas, columnas o cajas."
@@ -109,9 +119,14 @@ msgstr ""
 msgid "ESTADO DE LA FLOTA"
 msgstr ""
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:261
 msgid "ESTADO: EN DESARROLLO"
-msgstr ""
+msgstr "ESTADO: EN DESARROLLO"
+
+#: src/pages/HomePage.tsx:261
+#~ msgid "ESTADO: EN DESARROLLO"
+#~ msgstr ""
 
 #: src/games/battleships/Battleships.tsx:156
 #: src/games/bridges/Bridges.tsx:79
@@ -247,14 +262,24 @@ msgstr ""
 msgid "Todas las islas deben quedar conectadas en un solo grupo."
 msgstr ""
 
+#. js-lingui-explicit-id
 #: src/games/registry.ts:46
 msgid "Train Tracks"
 msgstr "Train Tracks"
+
+#: src/games/registry.ts:46
+#~ msgid "Train Tracks"
+#~ msgstr "Train Tracks"
 
 #: src/games/bridges/Bridges.tsx:40
 msgid "Una tercera vez borrará los puentes entre esas dos islas."
 msgstr ""
 
+#. js-lingui-explicit-id
 #: src/pages/HomePage.tsx:264
 msgid "WINS"
 msgstr "WINS"
+
+#: src/pages/HomePage.tsx:264
+#~ msgid "WINS"
+#~ msgstr "WINS"

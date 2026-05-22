@@ -43,7 +43,7 @@ const ComingSoon = React.lazy(
 export const gameRegistry: Record<string, GameMetadata> = {
   'train-tracks': {
     id: 'train-tracks',
-    nameKey: msg`Train Tracks`,
+    nameKey: msg({ id: 'Train Tracks', message: 'Train Tracks' }),
     descriptionKey: msg`Dibuja una vía de tren continua de A a B respetando los límites de cada fila y columna.`,
     difficulties: ['easy', 'medium', 'hard', 'expert'],
     component: React.lazy(() => import('./train-tracks/TrainTracks')),
