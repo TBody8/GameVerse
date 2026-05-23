@@ -47,7 +47,7 @@
     "planner": {
       "description": "Expert planning specialist for complex features and refactoring. Use for implementation planning, architectural changes, or complex refactoring.",
       "mode": "subagent",
-      "model": "google/antigravity-gemini-3.1-pro",
+      "model": "google/antigravity-opus-4-6-thinking",
       "prompt": "{file:.opencode/prompts/agents/planner.txt}",
       "tools": {
         "read": true,

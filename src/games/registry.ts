@@ -75,7 +75,7 @@ export const gameRegistry: Record<string, GameMetadata> = {
     difficulties: ['easy', 'medium', 'hard', 'expert'],
     component: React.lazy(() => import('./kakuro/Kakuro')),
     iconName: 'GridNine',
-    available: false,
+    available: true,
   },
   'slitherlink': {
     id: 'slitherlink',
