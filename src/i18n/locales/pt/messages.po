@@ -13,8 +13,28 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/games/kakuro/Kakuro.tsx:205
+msgid "¡Has completado el Kakuro correctamente!"
+msgstr ""
+
 #: src/pages/HomePage.tsx:241
 msgid "[DATOS ENCRIPTADOS] CONTENIDO DEL CARTUCHO RESTRINGIDO. SE REQUIERE AUTORIZACIÓN DE NIVEL 4."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:122
+msgid "10x10"
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:122
+msgid "12x12"
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:120
+msgid "6x6"
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:121
+msgid "8x8"
 msgstr ""
 
 #: src/games/registry.ts:55
@@ -65,6 +85,7 @@ msgstr "Conecte todas as ilhas com pontes sem cruzá-las para formar uma rede."
 
 #: src/games/battleships/Battleships.tsx:88
 #: src/games/bridges/Bridges.tsx:35
+#: src/games/kakuro/Kakuro.tsx:37
 #: src/games/train-tracks/TrainTracks.tsx:36
 msgid "Controles"
 msgstr ""
@@ -105,6 +126,10 @@ msgstr ""
 
 #: src/games/bridges/Bridges.tsx:27
 msgid "El número en la isla indica la cantidad EXACTA de puentes conectados a ella."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:32
+msgid "En un mismo bloque continuo de suma, NO se puede repetir el mismo número."
 msgstr ""
 
 #: src/games/registry.ts:56
@@ -148,8 +173,16 @@ msgstr "Insira um cartucho digital para carregar o quebra-cabeça. Todo o progre
 msgid "Kakuro"
 msgstr "Kakuro"
 
+#: src/games/kakuro/Kakuro.tsx:26
+msgid "La suma de cada bloque debe coincidir con la pista dada."
+msgstr ""
+
 #: src/games/train-tracks/TrainTracks.tsx:31
 msgid "La vía no puede cruzarse a sí misma ni ramificarse."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:33
+msgid "Las pistas diagonales indican sumas horizontales (arriba a la derecha) o verticales (abajo a la izquierda)."
 msgstr ""
 
 #: src/games/battleships/Battleships.tsx:83
@@ -184,12 +217,17 @@ msgstr ""
 
 #: src/games/battleships/Battleships.tsx:74
 #: src/games/bridges/Bridges.tsx:21
+#: src/games/kakuro/Kakuro.tsx:23
 #: src/games/train-tracks/TrainTracks.tsx:22
 msgid "Objetivo"
 msgstr ""
 
 #: src/games/bridges/Bridges.tsx:30
 msgid "Puedes poner un máximo de 2 puentes entre las mismas dos islas."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:25
+msgid "Rellena las casillas blancas con números del 1 al 9."
 msgstr ""
 
 #: src/games/bridges/Bridges.tsx:39
@@ -202,12 +240,17 @@ msgstr ""
 
 #: src/games/battleships/Battleships.tsx:80
 #: src/games/bridges/Bridges.tsx:25
+#: src/games/kakuro/Kakuro.tsx:30
 #: src/games/train-tracks/TrainTracks.tsx:28
 msgid "Restricciones"
 msgstr ""
 
 #: src/games/registry.ts:110
 msgid "Revela la imagen oculta coloreando las celdas según los números del borde."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:187
+msgid "Selecciona una casilla y usa el teclado o los botones para introducir un número del 1 al 9."
 msgstr ""
 
 #: src/games/bridges/Bridges.tsx:113
@@ -236,6 +279,10 @@ msgstr ""
 
 #: src/games/bridges/Bridges.tsx:38
 msgid "Toca otra isla en línea recta para crear un puente entre ambas."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:39
+msgid "Toca una celda blanca para seleccionarla."
 msgstr ""
 
 #: src/games/train-tracks/TrainTracks.tsx:38
@@ -273,6 +320,14 @@ msgstr "Train Tracks"
 
 #: src/games/bridges/Bridges.tsx:40
 msgid "Una tercera vez borrará los puentes entre esas dos islas."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:41
+msgid "Usa el botón de borrar (o Backspace) para vaciar una celda."
+msgstr ""
+
+#: src/games/kakuro/Kakuro.tsx:40
+msgid "Usa el teclado numérico en pantalla o el físico para introducir números."
 msgstr ""
 
 #. js-lingui-explicit-id
